@@ -5,13 +5,13 @@ source common.sh
 
 sudo setenforce permissive
 
-sudo yum -y install curl vim-enhanced epel-release wget python-pip
+sudo yum -y install curl vim-enhanced epel-release wget python-pip patch golang
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
 
 sudo pip install lolcat
 
 # for tripleo-repos install:
-sudo yum -y install python-setuptools python-requests patch
+sudo yum -y install python-setuptools python-requests
 
 cd
 git clone https://git.openstack.org/openstack/tripleo-repos

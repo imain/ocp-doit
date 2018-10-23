@@ -29,6 +29,7 @@ openstack quota set --secgroups -1 --secgroup-rules -1 admin
 wget http://aos-ostree.rhev-ci-vms.eng.rdu2.redhat.com/rhcos/images/cloud/latest/rhcos-qemu.qcow2.gz
 gunzip rhcos-qemu.qcow2.gz
 openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-qemu.qcow2
+openstack quota set --secgroups 100 --secgroup-rules 1000 admin
 
 lolcat <<EOF
 Undercloud installed and configured.  To test:
@@ -44,5 +45,5 @@ openstack floating ip create public
 
 openstack server add floating ip foo xxxx
 # login to vm
-echo ssh cirros@xxx
+echo ssh cirros@xxxx
 EOF

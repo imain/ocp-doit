@@ -48,3 +48,6 @@ sudo openstack tripleo deploy \
     --standalone \
     -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
 
+sudo chown -R $USER:$USER ~/.config/openstack
+perl -p -i -e "s/cloud:/#cloud:/" ~/.config/openstack/clouds.yaml
+
