@@ -25,7 +25,7 @@ parameter_defaults:
      next_hop: $DEFAULT_ROUTE
      default: true
   Debug: true
-  DeploymentUser: stack
+  DeploymentUser: $USER
   DnsServers:
     - 1.1.1.1
     - 8.8.8.8
@@ -42,7 +42,7 @@ parameter_defaults:
   # enable to force metadata for public net
   #NeutronEnableForceMetadata: true
   StandaloneEnableRoutedNetworks: false
-  StandaloneHomeDir: /home/stack
+  StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
   # Needed if running in a VM
   StandaloneExtraConfig:
