@@ -1,0 +1,26 @@
+diff --git a/docker/services/octavia/octavia-deployment-config.yaml b/docker/services/octavia/octavia-deployment-config.yaml
+index 0201fbe..95399e8 100644
+--- a/docker/services/octavia/octavia-deployment-config.yaml
++++ b/docker/services/octavia/octavia-deployment-config.yaml
+@@ -146,9 +146,9 @@ parameters:
+     default: 'service'
+ 
+ resources:
+-  default_key_pair:
+-    type: OS::Nova::KeyPair
+-    external_id: default
++  #default_key_pair:
++  #  type: OS::Nova::KeyPair
++  #  external_id: default
+   OctaviaVars:
+     type: OS::Heat::Value
+     properties:
+@@ -162,7 +162,7 @@ resources:
+           amp_image_tag: { get_param: OctaviaAmphoraImageTag }
+           amp_ssh_key_name: { get_param: OctaviaAmphoraSshKeyName }
+           amp_ssh_key_path: { get_param: OctaviaAmphoraSshKeyFile }
+-          amp_ssh_key_data: { get_attr: [default_key_pair, public_key] }
++          #amp_ssh_key_data: { get_attr: [default_key_pair, public_key] }
+           auth_username: { get_param: OctaviaUserName }
+           auth_password: { get_param: OctaviaPassword }
+           auth_project_name: { get_param: OctaviaProjectName }
