@@ -49,5 +49,6 @@ sudo openstack tripleo deploy \
     -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
 
 sudo chown -R $USER:$USER ~/.config/openstack
-perl -p -i -e "s/cloud:/#cloud:/" ~/.config/openstack/clouds.yaml
+sed -i.bak 's/cloud:/#cloud:/' ~/.config/openstack/clouds.yaml
+sed -i.bak '4i\      domain_name: default' ~/.config/openstack/clouds.yaml
 
