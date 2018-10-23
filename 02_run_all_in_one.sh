@@ -34,8 +34,7 @@ parameter_defaults:
   StandaloneEnableRoutedNetworks: false
   StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
-  # Needed if running in a VM
-  NovaComputeLibvirtType: qemu
+  $PARAMETERS_EXTRA
 EOF_CAT
 
 sudo openstack tripleo deploy \

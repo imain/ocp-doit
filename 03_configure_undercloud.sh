@@ -24,6 +24,12 @@ openstack security group rule create basic --protocol tcp --dst-port 22:22 --rem
 openstack security group rule create --protocol icmp basic
 openstack security group rule create --protocol udp --dst-port 53:53 basic
 
+# installer specific config
+openstack quota set --secgroups -1 --secgroup-rules -1 admin
+wget http://aos-ostree.rhev-ci-vms.eng.rdu2.redhat.com/rhcos/images/cloud/latest/rhcos-qemu.qcow2.gz
+gunzip rhcos-qemu.qcow2.gz
+openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-qemu.qcow2
+
 lolcat <<EOF
 Undercloud installed and configured.  To test:
 

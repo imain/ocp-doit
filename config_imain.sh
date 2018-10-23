@@ -5,3 +5,6 @@ CIDR=24
 NETWORK=192.168.124
 DEFAULT_ROUTE=192.168.124.1
 PUBLIC_INTERFACE=eth0
+
+# Needed if running in a VM
+PARAMETERS_EXTRA="NovaComputeLibvirtType: qemu"
