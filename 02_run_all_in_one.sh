@@ -3,22 +3,12 @@ set -x
 
 source common.sh
 
+openstack tripleo container image prepare default \
+      --output-env-file $SCRIPTDIR/containers-prepare-parameters.yaml
 
 cat > $SCRIPTDIR/standalone_parameters.yaml <<-EOF_CAT
 parameter_defaults:
-  CertmongerCA: local
   CloudName: $LOCAL_IP
-  ContainerImagePrepare:
-  - set:
-      ceph_image: daemon
-      ceph_namespace: docker.io/ceph
-      ceph_tag: v3.0.3-stable-3.0-luminous-centos-7-x86_64
-      name_prefix: centos-binary-
-      name_suffix: ''
-      namespace: docker.io/tripleomaster
-      neutron_driver: null
-      tag: current-tripleo
-    tag_from_label: rdo_version
   # default gateway
   ControlPlaneStaticRoutes:
    - ip_netmask: 0.0.0.0/0
@@ -45,10 +35,17 @@ parameter_defaults:
   StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
   # Needed if running in a VM
-  StandaloneExtraConfig:
-    nova::compute::libvirt::services::libvirt_virt_type: qemu
-    nova::compute::libvirt::libvirt_virt_type: qemu
+  NovaComputeLibvirtType: qemu
 EOF_CAT
 
-sudo openstack tripleo deploy  --templates $SCRIPTDIR/tripleo-heat-templates --local-ip=$LOCAL_IP/$CIDR   -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone.yaml -r $SCRIPTDIR/standalone.yaml -e $SCRIPTDIR/standalone_parameters.yaml --output-dir $SCRIPTDIR/standalone --standalone -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
+sudo openstack tripleo deploy \
+    --templates $SCRIPTDIR/tripleo-heat-templates \
+    --local-ip=$LOCAL_IP/$CIDR \
+    -e $SCRIPTDIR/containers-prepare-parameters.yaml \
+    -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
+    -r $SCRIPTDIR/standalone.yaml \
+    -e $SCRIPTDIR/standalone_parameters.yaml \
+    --output-dir $SCRIPTDIR/standalone \
+    --standalone \
+    -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
 
