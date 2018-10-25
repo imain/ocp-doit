@@ -22,14 +22,14 @@ cd
 #sudo tripleo-repos current-tripleo
 
 # current-tripleo is broken for the all-in-one atm.
-sudo tripleo-repos current-tripleo-dev
+sudo tripleo-repos current-tripleo
 
 sudo yum install -y python2-tripleoclient
 
 # TRIPLEO HEAT TEMPLATES
 if [ ! -d $SCRIPTDIR/tripleo-heat-templates ]; then
   cd $SCRIPTDIR
-  git clone git://git.openstack.org/openstack/tripleo-heat-templates
+  cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
   cd tripleo-heat-templates
   cat ../octavia_hack.patch | patch -p1
 fi

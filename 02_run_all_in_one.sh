@@ -37,16 +37,21 @@ parameter_defaults:
   $PARAMETERS_EXTRA
 EOF_CAT
 
+lolcat $SCRIPTDIR/standalone_parameters.yaml
+
 sudo openstack tripleo deploy \
     --templates $SCRIPTDIR/tripleo-heat-templates \
     --local-ip=$LOCAL_IP/$CIDR \
     -e $SCRIPTDIR/containers-prepare-parameters.yaml \
-    -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
     -r $SCRIPTDIR/standalone.yaml \
     -e $SCRIPTDIR/standalone_parameters.yaml \
     --output-dir $SCRIPTDIR/standalone \
-    --standalone \
+    --standalone \ 
     -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
+
+# NOTE(flaper87): We're using tripleo-current,
+# and this template only exists on master
+# -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
 
 sudo chown -R $USER:$USER ~/.config/openstack
 sed -i.bak 's/cloud:/#cloud:/' ~/.config/openstack/clouds.yaml
