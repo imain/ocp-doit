@@ -45,8 +45,9 @@ sudo openstack tripleo deploy \
     -e $SCRIPTDIR/containers-prepare-parameters.yaml \
     -r $SCRIPTDIR/standalone.yaml \
     -e $SCRIPTDIR/standalone_parameters.yaml \
+    -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone.yaml \
     --output-dir $SCRIPTDIR/standalone \
-    --standalone \ 
+    --standalone \
     -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
 
 # NOTE(flaper87): We're using tripleo-current,
