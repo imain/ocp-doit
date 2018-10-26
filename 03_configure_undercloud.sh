@@ -26,7 +26,7 @@ openstack security group rule create --protocol udp --dst-port 53:53 basic
 
 # installer specific config
 openstack quota set --secgroups -1 --secgroup-rules -1 admin
-openstack flavor create --ram 10240 --disk 20 --vcpu 8 --public m1.medium
+openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
 wget http://aos-ostree.rhev-ci-vms.eng.rdu2.redhat.com/rhcos/images/cloud/latest/rhcos-qemu.qcow2.gz
 gunzip rhcos-qemu.qcow2.gz
 openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-qemu.qcow2
