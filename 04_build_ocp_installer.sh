@@ -2,25 +2,30 @@
 
 set -ex
 
-sudo yum install -y golang docker
 eval "$(go env)"
 echo "$GOPATH" | lolcat # should print $HOME/go or something like that
 
 echo Building terraform | lolcat
 
 mkdir -p $GOPATH/src/github.com/terraform-providers/
+cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
 cd $GOPATH/src/github.com/terraform-providers/
-git clone https://github.com/terraform-providers/terraform-provider-openstack
+if [ ! -d terraform-provider-openstack ]; then
+  git clone https://github.com/terraform-providers/terraform-provider-openstack
+fi
 cd terraform-provider-openstack
 make build
 mkdir -p ~/.terraform.d/plugins
 cd ~/.terraform.d/plugins/
+rm -f terraform-provider-openstack_v1.6.1
 ln -s ~/go/bin/terraform-provider-openstack terraform-provider-openstack_v1.6.1
 cd
 
 echo Building the Installer | lolcat
 
-git clone https://github.com/openshift/installer.git "$GOPATH/src/github.com/openshift/installer"
+if [ ! -d "$GOPATH/src/github.com/openshift/installer" ]; then
+  git clone https://github.com/openshift/installer.git "$GOPATH/src/github.com/openshift/installer"
+fi
 cd "$GOPATH/src/github.com/openshift/installer"
 
 # Check out the OpenStack Pull Request: https://github.com/openshift/installer/pull/144
