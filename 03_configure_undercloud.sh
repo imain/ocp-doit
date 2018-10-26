@@ -7,7 +7,7 @@ export OS_CLOUD=standalone
 
 openstack endpoint list
 wget https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-openstack flavor create --ram 512 --disk 1 --vcpu 1 --public tiny
+openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
 openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
 openstack network create --internal private
 openstack subnet create public-net --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.3,end=$NETWORK.6 --network public
@@ -26,7 +26,7 @@ openstack security group rule create --protocol udp --dst-port 53:53 basic
 
 # installer specific config
 openstack quota set --secgroups -1 --secgroup-rules -1 admin
-openstack flavor create --ram 1024 --disk 2 --vcpu 2 --public m1.medium
+openstack flavor create --ram 10240 --disk 20 --vcpu 8 --public m1.medium
 wget http://aos-ostree.rhev-ci-vms.eng.rdu2.redhat.com/rhcos/images/cloud/latest/rhcos-qemu.qcow2.gz
 gunzip rhcos-qemu.qcow2.gz
 openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-qemu.qcow2
