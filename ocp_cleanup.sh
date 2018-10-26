@@ -32,3 +32,4 @@ openstack router delete $ROUTER_ID
 
 openstack network delete openshift
 
+rm -rf ocp

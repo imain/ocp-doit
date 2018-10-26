@@ -20,4 +20,4 @@ export OPENSHIFT_INSTALL_OPENSTACK_EXTERNAL_NETWORK=public
 export OPENSHIFT_INSTALL_PULL_SECRET='{"auths": { "quay.io": { "auth": "Y29yZW9zK3RlYzJfaWZidWdsa2VndmF0aXJyemlqZGMybnJ5ZzpWRVM0SVA0TjdSTjNROUUwMFA1Rk9NMjdSQUZNM1lIRjRYSzQ2UlJBTTFZQVdZWTdLOUFIQlM1OVBQVjhEVlla", "email": "" }}}'
 export OPENSHIFT_INSTALL_SSH_PUB_KEY="`cat $HOME/.ssh/id_rsa.pub`"
 
-$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug cluster
+$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug cluster --dir ocp
