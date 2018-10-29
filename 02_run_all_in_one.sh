@@ -2,6 +2,8 @@
 set -x
 
 source common.sh
+: ${DNS_SERVER_1:=1.1.1.1}
+: ${DNS_SERVER_2:=8.8.8.8}
 
 openstack tripleo container image prepare default \
       --output-env-file $SCRIPTDIR/containers-prepare-parameters.yaml
@@ -17,8 +19,8 @@ parameter_defaults:
   Debug: true
   DeploymentUser: $USER
   DnsServers:
-    - 1.1.1.1
-    - 8.8.8.8
+    - $DNS_SERVER_1
+    - $DNS_SERVER_2
   # needed for vip & pacemaker
   KernelIpNonLocalBind: 1
   DockerInsecureRegistryAddress:
