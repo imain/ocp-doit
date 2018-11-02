@@ -26,13 +26,16 @@ parameter_defaults:
   DockerInsecureRegistryAddress:
   - $LOCAL_IP:8787
   NeutronPublicInterface: $PUBLIC_INTERFACE
-  # domain name used by the host
-  NeutronDnsDomain: localdomain
   # re-use ctlplane bridge for public net
   NeutronBridgeMappings: datacentre:br-ctlplane
   NeutronPhysicalBridge: br-ctlplane
   # enable to force metadata for public net
-  #NeutronEnableForceMetadata: true
+  NeutronEnableForceMetadata: true
+  NeutronDnsDomain: shiftstack.com
+  NeutronPluginExtensions: "qos,port_security,dns_domain_ports"
+  ControllerExtraConfig:
+    neutron::agents::dhcp::dnsmasq_local_resolv: true
+
   StandaloneEnableRoutedNetworks: false
   StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
