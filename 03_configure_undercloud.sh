@@ -12,7 +12,7 @@ wget https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
 openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
 openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
 openstack network create --internal private
-openstack subnet create public-net --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.3,end=$NETWORK.6 --network public
+openstack subnet create public-net --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
 openstack subnet create private-net --subnet-range 192.168.24.0/24 --network private
 openstack image create cirros --container-format bare --disk-format qcow2 --public --file cirros-0.4.0-x86_64-disk.img
 if [ ! -f $HOME/.ssh/id_rsa ]; then
