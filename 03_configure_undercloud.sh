@@ -5,6 +5,8 @@ source common.sh
 
 export OS_CLOUD=standalone
 
+openstack object store account set --property Temp-URL-Key=superkey
+
 openstack endpoint list
 wget https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
 openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
