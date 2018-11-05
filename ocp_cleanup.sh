@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -e
 
 for server in $(openstack server list | grep rhcos \
         | awk '{print $2}') ; do
