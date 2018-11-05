@@ -34,6 +34,12 @@ gunzip rhcos-openstack.qcow2.gz
 openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-openstack.qcow2
 openstack quota set --secgroups 100 --secgroup-rules 1000 admin
 
+cat >> ~/.ssh/config <<EOF
+Host $NETWORK.*
+  StrictHostKeyChecking no
+  UserKnownHostsFile=/dev/null
+EOF
+
 cat <<EOF
 Undercloud installed and configured.  To test:
 
