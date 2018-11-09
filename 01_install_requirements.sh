@@ -10,8 +10,6 @@ sudo yum -y update
 sudo yum -y install curl vim-enhanced epel-release wget python-pip patch golang psmisc
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
 
-sudo pip install lolcat
-
 # for tripleo-repos install:
 sudo yum -y install python-setuptools python-requests
 
@@ -25,6 +23,10 @@ cd
 
 # current-tripleo is broken for the all-in-one atm.
 sudo tripleo-repos current-tripleo
+
+# Note python-pip comes from delorean-master-build-deps
+sudo yum -y install python-pip
+sudo pip install lolcat
 
 sudo yum install -y python2-tripleoclient
 
