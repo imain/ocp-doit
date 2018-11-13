@@ -9,4 +9,5 @@ if [ -z "$CONFIG" ]; then
     exit 1
 fi
 source $CONFIG
-
+figlet $CONFIG | lolcat
+lolcat $CONFIG

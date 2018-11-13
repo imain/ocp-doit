@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -xe
 
 source common.sh
 
@@ -29,9 +29,12 @@ openstack security group rule create --protocol udp --dst-port 53:53 basic
 # installer specific config
 openstack quota set --secgroups -1 --secgroup-rules -1 admin
 openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
-wget http://aos-ostree.rhev-ci-vms.eng.rdu2.redhat.com/rhcos/images/cloud/latest/rhcos-openstack.qcow2.gz
-gunzip rhcos-openstack.qcow2.gz
-openstack image create rhcos --container-format bare --disk-format qcow2 --public --file rhcos-openstack.qcow2
+
+IMAGE=redhat-coreos-maipo-47.94-qemu.qcow2
+if [ ! -f $IMAGE ]; then
+    curl --compressed -L -o $IMAGE https://releases-redhat-coreos.cloud.paas.upshift.redhat.com/storage/releases/maipo/47.94/$IMAGE
+fi
+openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $IMAGE
 openstack quota set --secgroups 100 --secgroup-rules 1000 admin
 
 cat >> ~/.ssh/config <<EOF
@@ -40,7 +43,7 @@ Host $NETWORK.*
   UserKnownHostsFile=/dev/null
 EOF
 
-cat <<EOF
+lolcat <<EOF
 Undercloud installed and configured.  To test:
 
 # launch instance
