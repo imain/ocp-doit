@@ -30,7 +30,7 @@ openstack security group rule create --protocol udp --dst-port 53:53 basic
 openstack quota set --secgroups -1 --secgroup-rules -1 admin
 openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
 
-IMAGE=redhat-coreos-maipo-47.94-qemu.qcow2
+IMAGE=redhat-coreos-maipo-47.94-openstack.qcow2
 if [ ! -f $IMAGE ]; then
     curl --insecure --compressed -L -o $IMAGE https://releases-redhat-coreos.cloud.paas.upshift.redhat.com/storage/releases/maipo/47.94/$IMAGE
 fi
