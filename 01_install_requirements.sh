@@ -21,7 +21,8 @@ sudo yum -y install $GOLANG_SOURCE/noarch/golang-src-$GOLANG_VERSION.noarch.rpm 
                     $GOLANG_SOURCE/x86_64/golang-$GOLANG_VERSION.x86_64.rpm \
                     $GOLANG_SOURCE/x86_64/golang-bin-$GOLANG_VERSION.x86_64.rpm
 
-sudo yum -y install curl vim-enhanced epel-release wget python-pip patch psmisc figlet
+sudo yum -y install epel-release
+sudo yum -y install curl vim-enhanced wget python-pip patch psmisc figlet
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
 
 sudo pip install lolcat
