@@ -6,6 +6,27 @@ source common.sh
 eval "$(go env)"
 echo "$GOPATH" | lolcat # should print $HOME/go or something like that
 
+figlet "Syncing Origin" | lolcat
+
+if [ ! -d "$GOPATH/src/github.com/openshift/origin" ]; then
+  git clone https://github.com/openshift/origin.git "$GOPATH/src/github.com/openshift/origin"
+fi
+cd "$GOPATH/src/github.com/openshift/origin"
+
+git pull origin master
+
+figlet "Syncing Machine Config Operator" | lolcat
+
+if [ ! -d "$GOPATH/src/github.com/openshift/machine-config-operator" ]; then
+  git clone https://github.com/openshift/machine-config-operator.git "$GOPATH/src/github.com/openshift/machine-config-operator"
+fi
+cd "$GOPATH/src/github.com/openshift/machine-config-operator"
+
+git am --abort || true
+git checkout master
+git branch -D we_dont_need_no_stinkin_patches || true
+git checkout -b we_dont_need_no_stinkin_patches
+
 figlet "Syncing Installer repo" | lolcat
 
 if [ ! -d "$GOPATH/src/github.com/openshift/installer" ]; then

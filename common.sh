@@ -11,3 +11,6 @@ fi
 source $CONFIG
 figlet $CONFIG | lolcat
 lolcat $CONFIG
+
+export REGISTRY=${REGISTRY:-$LOCAL_IP:8787}
+export REPO=${REPO:-$REGISTRY/openshift}
