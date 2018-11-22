@@ -6,7 +6,7 @@ source common.sh
 eval "$(go env)"
 echo "$GOPATH" | lolcat # should print $HOME/go or something like that
 
-figlet "Syncing Installer Repos" | lolcat
+figlet "Syncing Installer repo" | lolcat
 
 if [ ! -d "$GOPATH/src/github.com/openshift/installer" ]; then
   git clone https://github.com/openshift/installer.git "$GOPATH/src/github.com/openshift/installer"
@@ -28,7 +28,7 @@ git am < $patch_file
 
 
 
-figlet "Syncing Terraform Repos" | lolcat
+figlet "Syncing Terraform repo" | lolcat
 
 mkdir -p $GOPATH/src/github.com/terraform-providers/
 cd $GOPATH/src/github.com/terraform-providers/
@@ -36,3 +36,8 @@ if [ ! -d terraform-provider-openstack ]; then
   git clone https://github.com/terraform-providers/terraform-provider-openstack
 fi
 
+figlet "Syncing Openshift release repo" | lolcat
+
+if [ ! -d $GOPATH/src/github.com/openshift/release ]; then
+  git clone https://github.com/openshift/release.git $GOPATH/src/github.com/openshift/release
+fi
