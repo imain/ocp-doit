@@ -29,6 +29,6 @@ if ! [ -f /etc/openstack/clouds.yaml ]; then
     sudo cp $HOME/.config/openstack/clouds.yaml /etc/openstack/
 fi
 
-$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug cluster --dir ocp
+$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug create cluster --dir ocp
 
 openstack port set --dns-name $OPENSHIFT_INSTALL_CLUSTER_NAME-api bootstrap-port
