@@ -45,7 +45,7 @@ fi
 
 figlet "Syncing ci-operator repo" | lolcat
 
-if [ ! -d $GOPATH/src/github.com/openshift/release ]; then
+if [ ! -d $GOPATH/src/github.com/openshift/ci-operator ]; then
   git clone https://github.com/openshift/ci-operator.git "$GOPATH/src/github.com/openshift/ci-operator"
 fi
 
