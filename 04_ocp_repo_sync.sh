@@ -25,6 +25,9 @@ echo $patch_file
 curl -L https://github.com/tomassedovic/installer/commit/dns-workaround.patch -o $patch_file
 sed -i "s/10.1.11.152/$BOOTSTRAP_FLOATING_IP/g" $patch_file
 git am < $patch_file
+
+# NOTE(flaper87): Add service VM
+curl -L https://github.com/flaper87/installer/commit/service-vm.patch | git am
 popd
 
 
