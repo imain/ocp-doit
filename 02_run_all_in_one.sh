@@ -21,6 +21,9 @@ parameter_defaults:
   DnsServers:
     - $DNS_SERVER_1
     - $DNS_SERVER_2
+  NeutronDhcpAgentDnsmasqDnsServers:
+    - $DNS_SERVER_1
+    - $DNS_SERVER_2
   # needed for vip & pacemaker
   KernelIpNonLocalBind: 1
   DockerInsecureRegistryAddress:
@@ -52,8 +55,7 @@ sudo openstack tripleo deploy \
     -e $SCRIPTDIR/standalone_parameters.yaml \
     -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone.yaml \
     --output-dir $SCRIPTDIR/standalone \
-    --standalone \
-    -e $SCRIPTDIR/tripleo-heat-templates/environments/enable-designate.yaml
+    --standalone
 
 # NOTE(flaper87): We're using tripleo-current,
 # and this template only exists on master
