@@ -16,6 +16,7 @@ pushd "$GOPATH/src/github.com/openshift/installer"
 git am --abort || true
 git checkout master
 git branch -D we_dont_need_no_stinkin_patches || true
+git pull
 git checkout -b we_dont_need_no_stinkin_patches
 
 #echo https://github.com/openshift/installer/pull/611 | lolcat
