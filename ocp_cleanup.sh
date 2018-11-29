@@ -2,8 +2,7 @@
 
 set -e
 
-export OS_CLOUD="standalone"
-eval "$(go env)"
+source ocp_install_env.sh
 
 $GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug --dir ocp destroy cluster
 
