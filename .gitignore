@@ -1,0 +1,7 @@
+openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/
+tripleo-heat-templates/
+cirros-0.4.0-x86_64-disk.img
+containers-prepare-parameters.yaml
+standalone/
+standalone_parameters.yaml
