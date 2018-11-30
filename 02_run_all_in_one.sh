@@ -65,3 +65,15 @@ sudo chown -R $USER:$USER ~/.config/openstack
 sed -i.bak 's/cloud:/#cloud:/' ~/.config/openstack/clouds.yaml
 sed -i.bak '4i\      domain_name: default' ~/.config/openstack/clouds.yaml
 
+# NOTE(shadower): create a config for a non-admin user called `openshift`
+cat <<EOF >> ~/.config/openstack/clouds.yaml
+  openshift:
+    auth:
+      auth_url: http://${LOCAL_IP}:5000/
+      project_name: openshift
+      username: openshift
+      password: password
+      domain_name: default
+    region_name: regionOne
+    identity_api_version: 3
+EOF
