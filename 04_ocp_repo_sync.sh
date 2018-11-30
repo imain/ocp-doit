@@ -11,7 +11,8 @@ function sync_go_repo_and_patch {
     figlet "Syncing $1" | lolcat
     
     if [ ! -d $DEST ]; then
-        git clone $2 $1
+        mkdir -p $DEST
+        git clone $2 $DEST
     fi
 
     pushd $DEST
@@ -44,3 +45,6 @@ sync_go_repo_and_patch github.com/terraform-providers/terraform-provider-opensta
 
 sync_go_repo_and_patch github.com/openshift/ci-operator https://github.com/openshift/ci-operator.git
 sync_go_repo_and_patch github.com/sallyom/installer-e2e https://github.com/sallyom/installer-e2e.git
+
+
+sync_go_repo_and_patch sifs.k8s.io/openshift/cluster-api-provider-openstack https://github.com/openshift/cluster-api-provider-openstack.git
