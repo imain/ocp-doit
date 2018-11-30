@@ -1,6 +1,6 @@
 eval "$(go env)"
 
-export OS_CLOUD=standalone
+export OS_CLOUD=openshift
 export OPENSHIFT_INSTALL_OPENSTACK_CLOUD="${OS_CLOUD}"
 export OPENSHIFT_INSTALL_DATA="$GOPATH/src/github.com/openshift/installer/data/data"
 export OPENSHIFT_INSTALL_OPENSTACK_REGION=regionOne
