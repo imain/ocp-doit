@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -x
 
+export CONFIG=config_shadower.sh
+
 source common.sh
 : ${DNS_SERVER_1:=1.1.1.1}
 : ${DNS_SERVER_2:=8.8.8.8}
