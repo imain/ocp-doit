@@ -11,7 +11,7 @@ if ! openstack flavor show tiny; then
     openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
 fi
 if ! openstack flavor show m1.medium; then
-    openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
+    openstack flavor create --ram 4096 --disk 20 --vcpu 2 --public m1.medium
 fi
 if ! openstack network show public; then
     openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
