@@ -34,13 +34,7 @@ rm -f terraform-provider-openstack_v1.6.1
 ln -s ~/go/bin/terraform-provider-openstack terraform-provider-openstack_v1.6.1
 popd
 
-figlet "Building the Installer" | lolcat
-
-pushd "$GOPATH/src/github.com/openshift/installer"
-./hack/get-terraform.sh
-export MODE=dev
-./hack/build.sh
-popd
+./build_ocp_installer.sh
 
 pushd "$GOPATH/src/github.com/openshift/ci-operator"
 make build
