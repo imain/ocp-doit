@@ -31,9 +31,7 @@ fi
 RHCOS_IMAGE_VERSION="${RHCOS_IMAGE_VERSION:-47.145}"
 RHCOS_IMAGE_NAME="redhat-coreos-maipo-${RHCOS_IMAGE_VERSION}"
 RHCOS_IMAGE_FILENAME="${RHCOS_IMAGE_NAME}-openstack.qcow2"
-if [ ! -f "$RHCOS_IMAGE_FILENAME" ]; then
-    curl --insecure --compressed -L -O "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}"
-fi
+./get_rhcos_image.sh
 RHOS_IMAGE_HASH=$(sha512sum $RHCOS_IMAGE_FILENAME | awk '{print $1}')
 if ! openstack image show rhcos; then
     openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
@@ -42,7 +40,6 @@ elif ! openstack image show rhcos -c properties -f shell | grep -q $RHOS_IMAGE_H
     openstack image delete rhcos
     openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
 fi
-
 
 # Create a user without any admin priviledges
 if ! openstack project show openshift; then
