@@ -55,6 +55,19 @@ openstack role add --user openshift --project openshift _member_
 openstack role add --user openshift --project openshift swiftoperator
 openstack quota set --secgroups 100 --secgroup-rules 1000 openshift
 
+if ! grep -q openshift ~/.config/openstack/clouds.yaml ; then
+cat >> ~/.config/openstack/clouds.yaml << EOF
+  openshift:
+    auth:
+      domain_name: default
+      auth_url: http://${LOCAL_IP}:5000/
+      project_name: openshift
+      username: openshift
+      password: password
+    region_name: regionOne
+    identity_api_version: 3
+EOF
+fi
 
 # NOTE: this is a non-admin user
 export OS_CLOUD=openshift
