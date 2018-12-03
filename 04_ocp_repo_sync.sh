@@ -34,6 +34,7 @@ sync_go_repo_and_patch github.com/openshift/origin https://github.com/openshift/
 sync_go_repo_and_patch github.com/openshift/release https://github.com/openshift/release.git
 
 sync_go_repo_and_patch github.com/openshift/machine-config-operator https://github.com/openshift/machine-config-operator.git
+sync_go_repo_and_patch github.com/openshift/machine-api-operator https://github.com/openshift/machine-api-operator.git
 
 sync_go_repo_and_patch \
   github.com/openshift/installer \
@@ -46,4 +47,4 @@ sync_go_repo_and_patch github.com/openshift/ci-operator https://github.com/opens
 sync_go_repo_and_patch github.com/sallyom/installer-e2e https://github.com/sallyom/installer-e2e.git
 
 
-sync_go_repo_and_patch sifs.k8s.io/openshift/cluster-api-provider-openstack https://github.com/openshift/cluster-api-provider-openstack.git
+sync_go_repo_and_patch sigs.k8s.io/openshift/cluster-api-provider-openstack https://github.com/openshift/cluster-api-provider-openstack.git
