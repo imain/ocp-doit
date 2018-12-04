@@ -22,7 +22,7 @@ RHCOS_IMAGE_VERSION="${RHCOS_IMAGE_VERSION:-47.145}"
 RHCOS_IMAGE_NAME="redhat-coreos-maipo-${RHCOS_IMAGE_VERSION}"
 RHCOS_IMAGE_FILENAME="${RHCOS_IMAGE_NAME}-openstack.qcow2"
 if [ ! -f "$RHCOS_IMAGE_FILENAME" ]; then
-    curl --compressed -L -O "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}"
+    curl --insecure --compressed -L -O "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}"
 fi
 openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
 
