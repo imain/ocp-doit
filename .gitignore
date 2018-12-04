@@ -5,3 +5,5 @@ cirros-0.4.0-x86_64-disk.img
 containers-prepare-parameters.yaml
 standalone/
 standalone_parameters.yaml
+ocp/
+*.qcow2
