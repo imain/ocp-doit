@@ -7,29 +7,50 @@ source common.sh
 export OS_CLOUD=standalone
 
 openstack endpoint list
-openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
-openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
-openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
-openstack subnet create public-subnet --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
-
-CIRROS_IMAGE_FILENAME="${CIRROS_IMAGE_FILENAME:-cirros-0.4.0-x86_64-disk.img}"
-if [ ! -f "$CIRROS_IMAGE_FILENAME" ]; then
-    wget https://download.cirros-cloud.net/0.4.0/"$CIRROS_IMAGE_FILENAME"
+if ! openstack flavor show tiny; then
+    openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
 fi
-openstack image create cirros --container-format bare --disk-format qcow2 --public --file "$CIRROS_IMAGE_FILENAME"
+if ! openstack flavor show m1.medium; then
+    openstack flavor create --ram 10240 --disk 20 --vcpu 2 --public m1.medium
+fi
+if ! openstack network show public; then
+    openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
+fi
+if ! openstack subnet show public-subnet; then
+    openstack subnet create public-subnet --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
+fi
+
+if ! openstack image show cirros; then
+    CIRROS_IMAGE_FILENAME="${CIRROS_IMAGE_FILENAME:-cirros-0.4.0-x86_64-disk.img}"
+    if [ ! -f "$CIRROS_IMAGE_FILENAME" ]; then
+        wget https://download.cirros-cloud.net/0.4.0/"$CIRROS_IMAGE_FILENAME"
+    fi
+    openstack image create cirros --container-format bare --disk-format qcow2 --public --file "$CIRROS_IMAGE_FILENAME"
+fi
 
 RHCOS_IMAGE_VERSION="${RHCOS_IMAGE_VERSION:-47.145}"
 RHCOS_IMAGE_NAME="redhat-coreos-maipo-${RHCOS_IMAGE_VERSION}"
 RHCOS_IMAGE_FILENAME="${RHCOS_IMAGE_NAME}-openstack.qcow2"
 if [ ! -f "$RHCOS_IMAGE_FILENAME" ]; then
-    curl --compressed -L -O "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}"
+    curl --insecure --compressed -L -O "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}"
 fi
-openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
+RHOS_IMAGE_HASH=$(sha512sum $RHCOS_IMAGE_FILENAME | awk '{print $1}')
+if ! openstack image show rhcos; then
+    openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
+elif ! openstack image show rhcos -c properties -f shell | grep -q $RHOS_IMAGE_HASH; then
+    echo "rhos image changed, replacing"
+    openstack image delete rhcos
+    openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
+fi
 
 
 # Create a user without any admin priviledges
-openstack project create openshift
-openstack user create --password 'password' openshift
+if ! openstack project show openshift; then
+    openstack project create openshift
+fi
+if ! openstack user show openshift; then
+    openstack user create --password 'password' openshift
+fi
 openstack role add --user openshift --project openshift _member_
 openstack role add --user openshift --project openshift swiftoperator
 openstack quota set --secgroups 100 --secgroup-rules 1000 openshift
@@ -42,23 +63,39 @@ if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
     ssh-keygen
 fi
 
-openstack keypair create --public-key ~/.ssh/id_rsa.pub default
+if ! openstack keypair show default; then
+    openstack keypair create --public-key ~/.ssh/id_rsa.pub default
+fi
 openstack object store account set --property Temp-URL-Key=superkey
-openstack network create --internal private
-openstack subnet create private-subnet --subnet-range 192.168.24.0/24 --network private
+if ! openstack network show private; then
+    openstack network create --internal private
+fi
+if ! openstack subnet show private-subnet; then
+    openstack subnet create private-subnet --subnet-range 192.168.24.0/24 --network private
+fi
 # create basic security group to allow ssh/ping/dns
 openstack security group list
-openstack security group create basic
-openstack security group rule create basic --protocol tcp --dst-port 22:22 --remote-ip 0.0.0.0/0
-openstack security group rule create --protocol icmp basic
-openstack security group rule create --protocol udp --dst-port 53:53 basic
+if ! openstack security group show basic; then
+    openstack security group create basic
+fi
+if ! openstack security group rule list basic | grep "22:22"; then
+    openstack security group rule create basic --protocol tcp --dst-port 22:22 --remote-ip 0.0.0.0/0
+fi
+if ! openstack security group rule list basic | grep "icmp"; then
+    openstack security group rule create --protocol icmp basic
+fi
+if ! openstack security group rule list basic | grep "53:53"; then
+    openstack security group rule create --protocol udp --dst-port 53:53 basic
+fi
 
 
-cat >> ~/.ssh/config <<EOF
+if ! grep -q StrictHostKeyChecking ~/.ssh/config; then
+    cat >> ~/.ssh/config <<EOF
 Host $NETWORK.*
   StrictHostKeyChecking no
   UserKnownHostsFile=/dev/null
 EOF
+fi
 
 lolcat <<EOF
 Undercloud installed and configured.  To test:
