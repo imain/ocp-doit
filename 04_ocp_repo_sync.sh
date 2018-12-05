@@ -38,7 +38,6 @@ sync_go_repo_and_patch github.com/openshift/machine-config-operator https://gith
 sync_go_repo_and_patch \
   github.com/openshift/installer \
   https://github.com/openshift/installer.git \
-  https://github.com/tomassedovic/installer/commit/dns-workaround.patch \
   https://github.com/flaper87/installer/commit/service-vm.patch
 
 sync_go_repo_and_patch github.com/terraform-providers/terraform-provider-openstack https://github.com/terraform-providers/terraform-provider-openstack
