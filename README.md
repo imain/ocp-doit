@@ -37,7 +37,18 @@ Or:
 and finally, run the OpenShift installer to do a deployment on your local
 single node OpenStack deployment:
 
-- `CONFIG="config_user.sh" ./06_install_ocp.sh`
+- `CONFIG="config_user.sh" ./06_run_ocp.sh`
+
+### Customizing Deployment
+
+You may need to provide further customization to your deployment, such as
+limiting the number of master and worker nodes created to fit in your
+development environment.  You can do this by generating and editing the
+`install-config.yaml` file before launching the deployment.
+
+- `CONFIG="config_user.sh" ./06_run_ocp.sh create install-config`
+- `${EDITOR} ocp/install-config.yaml
+- `CONFIG="config_user.sh" ./06_run_ocp.sh`
 
 ## 3) Installer Dev Workflow
 
@@ -46,5 +57,5 @@ sripts.  If you're making changes to the installer, your workflow would look
 like:
 
 - `ocp_cleanup.sh`
-- `build_ocp_installer.sh`
-- `06_install_ocp.sh`
+- `CONFIG=”config_user.sh” build_ocp_installer.sh`
+- `CONFIG=”config_user.sh” 06_run_ocp.sh`
