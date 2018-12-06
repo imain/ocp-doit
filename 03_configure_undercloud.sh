@@ -105,7 +105,7 @@ openstack server create --flavor tiny --image cirros --key-name default --networ
 openstack router create internets
 # NOTE: this will consume one of your floating IP addresses!
 openstack router set internets --external-gateway public
-openstack router add subnet internets private-net
+openstack router add subnet internets private-subnet
 # create floating ip
 openstack floating ip create public
 
