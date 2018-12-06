@@ -7,14 +7,7 @@ sudo setenforce permissive
 
 sudo yum -y update
 
-# So we need go 1.10 now to build the installer.  Go the easy route and just install
-# upstream packages.  Hopefully this is temporary.
-
-export GOLANG_SOURCE="http://cbs.centos.org/kojifiles/packages/golang/1.10.2/1.el7"
-export GOLANG_VERSION="1.10.2-1.el7"
-
-# Should be a noop or fix golang version
-sudo yum -y autoremove golang
+sudo yum -y erase golang-src
 
 sudo yum -y install http://cbs.centos.org/kojifiles/packages/go-srpm-macros/2/17.el7/noarch/go-srpm-macros-2-17.el7.noarch.rpm
 sudo yum -y install $GOLANG_SOURCE/noarch/golang-src-$GOLANG_VERSION.noarch.rpm \
@@ -22,7 +15,7 @@ sudo yum -y install $GOLANG_SOURCE/noarch/golang-src-$GOLANG_VERSION.noarch.rpm 
                     $GOLANG_SOURCE/x86_64/golang-bin-$GOLANG_VERSION.x86_64.rpm
 
 sudo yum -y install epel-release
-sudo yum -y install curl vim-enhanced wget python-pip patch psmisc figlet
+sudo yum -y install curl vim-enhanced wget python-pip patch psmisc figlet golang
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
 
 sudo pip install lolcat
