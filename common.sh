@@ -9,8 +9,11 @@ if [ -z "$CONFIG" ]; then
     exit 1
 fi
 source $CONFIG
-figlet $CONFIG | lolcat
-lolcat $CONFIG
+cat $CONFIG
 
 export REGISTRY=${REGISTRY:-$LOCAL_IP:8787}
 export REPO=${REPO:-$REGISTRY/openshift}
+
+export RHCOS_IMAGE_VERSION="${RHCOS_IMAGE_VERSION:-47.188}"
+export RHCOS_IMAGE_NAME="redhat-coreos-maipo-${RHCOS_IMAGE_VERSION}"
+export RHCOS_IMAGE_FILENAME="${RHCOS_IMAGE_NAME}-openstack.qcow2"

@@ -28,9 +28,6 @@ if ! openstack image show cirros; then
     openstack image create cirros --container-format bare --disk-format qcow2 --public --file "$CIRROS_IMAGE_FILENAME"
 fi
 
-RHCOS_IMAGE_VERSION="${RHCOS_IMAGE_VERSION:-47.145}"
-RHCOS_IMAGE_NAME="redhat-coreos-maipo-${RHCOS_IMAGE_VERSION}"
-RHCOS_IMAGE_FILENAME="${RHCOS_IMAGE_NAME}-openstack.qcow2"
 ./get_rhcos_image.sh
 RHOS_IMAGE_HASH=$(sha512sum $RHCOS_IMAGE_FILENAME | awk '{print $1}')
 if ! openstack image show rhcos; then
