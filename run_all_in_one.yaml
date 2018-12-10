@@ -1,0 +1,48 @@
+- hosts: localhost
+  tasks:
+    - name: Run image prepare
+      command: openstack tripleo container image prepare default --output-env-file {{ playbook_dir }}/containers-prepare-parameters.yaml
+  
+    - name: Render standalone_parameters template
+      template:
+        src: standalone_parameters.yaml.j2
+        dest: "{{ playbook_dir }}/standalone_parameters.yaml"
+
+    - name: Print template
+      command: lolcat {{ playbook_dir }}/standalone_parameters.yaml
+
+    - name: Run deploy
+      command: >
+        openstack tripleo deploy \
+          --templates {{ playbook_dir }}/tripleo-heat-templates \
+          --local-ip={{ local_ip }}/{{ cidr }} \
+          -e {{ playbook_dir }}/containers-prepare-parameters.yaml \
+          -r {{ playbook_dir }}/standalone.yaml \
+          -e {{ playbook_dir }}/standalone_parameters.yaml \
+          -e {{ playbook_dir }}/tripleo-heat-templates/environments/standalone.yaml \
+          --output-dir {{ playbook_dir }}/standalone \
+          --standalone
+      become: True
+
+    - name: Set owner of .config/openstack dir
+      file:
+        path: "{{ ansible_env.HOME }}/.config/openstack"
+        owner: "{{ ansible_env.USER }}"
+        group: "{{ ansible_env.USER }}"
+        recurse: yes
+      become: True
+    
+    - name: Comment out cloud tag
+      replace:
+        path: "{{ ansible_env.HOME }}/.config/openstack/clouds.yaml"
+        regexp: '(\s+)[^#] cloud: (.*)$'
+        replace: '\1  # cloud: \2'
+        backup: yes
+
+    - name: Insert domain name
+      lineinfile:
+        path: "{{ ansible_env.HOME }}/.config/openstack/clouds.yaml"
+        line: "      domain_name: default"
+        insertafter: '(\s+)auth:'
+        firstmatch: yes
+        backup: yes

@@ -1,0 +1,196 @@
+- hosts: localhost
+  vars:
+    cirros_base_url: "https://download.cirros-cloud.net/0.4.0/"
+    cirros_filename: "cirros-0.4.0-x86_64-disk.img"
+  tasks:
+    - name: Create flavors
+      os_nova_flavor:
+        cloud: standalone
+        state: present
+        is_public: yes
+        name: "{{item.name}}"
+        ram: "{{item.ram}}"
+        vcpus: "{{item.vcpus}}"
+        disk: "{{item.disk}}"
+      with_items:
+        - { "name": "tiny", "ram": "1024", "vcpus": 2, "disk": 10 }
+        - { "name": "m1.medium", "ram": "1024", "vcpus": 2, "disk": 20 }
+
+    - name: Create public network
+      os_network:
+        cloud: standalone
+        state: present
+        name: public
+        provider_physical_network: datacentre
+        provider_network_type: flat
+        external: yes
+
+    - name: Create public subnet
+      os_subnet:
+        cloud: standalone
+        state: present
+        name: "public-subnet"
+        network_name: public
+        cidr: "{{ network }}.0/24"
+        enable_dhcp: no
+        gateway_ip: "{{ default_route }}"
+        allocation_pool_start: "{{ network }}.{{ floating_ip_start }}"
+        allocation_pool_end: "{{ network }}.{{ floating_ip_end }}"
+
+    - name: Retrieve cirros disk image
+      get_url:
+        url: "{{ cirros_base_url }}{{ cirros_filename }}"
+        dest: "{{ playbook_dir }}/{{ cirros_filename }}"
+
+    - name: Create cirros image
+      os_image:
+        cloud: standalone
+        state: present
+        name: cirros
+        container_format: bare
+        disk_format: qcow2
+        is_public: yes
+        filename: "{{ cirros_filename }}"
+
+    - name: Retrieve RHCOS image
+      get_url:
+        url: "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/{{ rhcos_image_filename }}"
+        dest: "{{ playbook_dir }}/{{ rhcos_image_filename }}"
+
+    - name: Register RHCOS image hash
+      stat:
+        path: "{{ playbook_dir }}/{{ rhcos_image_filename }}"
+        checksum_algorithm: sha512
+      register: rhcos_stat
+
+    - name: Get existing RHCOS image hash
+      os_image_facts:
+        cloud: standalone
+        image: rhcos
+
+    - name: Delete image if hashes don't match
+      os_image:
+        cloud: standalone
+        state: absent
+        name: rhcos
+      when:
+        - openstack_image.os_hash_value is defined
+        - openstack_image.os_hash_value != rhcos_stat.stat.checksum
+
+    - name: Create RHCOS image
+      os_image:
+        cloud: standalone
+        state: present
+        name: rhcos
+        container_format: bare
+        disk_format: qcow2
+        is_public: yes
+        filename: "{{rhcos_image_filename}}"
+
+    - name: Create openshift project
+      os_project:
+        cloud: standalone
+        state: present
+        name: openshift
+        domain_id: default
+
+    - name: Create openshift user
+      os_user:
+        cloud: standalone
+        state: present
+        name: openshift
+        password: password
+        domain: default
+
+    - name: Add openshift user to roles
+      os_user_role:
+        cloud: standalone
+        user: openshift
+        project: openshift
+        role: "{{item}}"
+      with_items:
+        - _member_
+        - swiftoperator
+
+    - name: Set openshift project quotas
+      command: openstack quota set --secgroups 100 --secgroup-rules 1000 openshift
+      environment:
+        OS_CLOUD: standalone
+
+    - name: Add Openshift cloud to clouds.yaml
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.config/openstack/clouds.yaml"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |2
+            openshift:
+             auth:
+               domain_name: default
+               auth_url: http://{{ local_ip }}:5000/
+               project_name: openshift
+               username: openshift
+               password: password
+             region_name: regionOne
+             identity_api_version: 3
+        backup: yes
+
+    - name: Create SSH key if it doesn't exist
+      user:
+        name: "{{ ansible_env.USER }}"
+        generate_ssh_key: yes
+        ssh_key_file: .ssh/id_rsa
+    
+    - name: Create OS keypair
+      os_keypair:
+        cloud: openshift
+        state: present
+        name: default
+        public_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+
+    - name: Set Temp-URL-Key
+      command: openstack object store account set --property Temp-URL-Key=superkey
+      environment:
+        OS_CLOUD: openshift
+
+    - name: Create private network
+      os_network:
+        cloud: openshift
+        state: present
+        name: private
+        external: no
+    
+    - name: Create private subnet
+      os_subnet:
+        cloud: openshift
+        state: present
+        name: private-subnet
+        network_name: private
+        cidr: 192.168.24.0/24
+
+    - name: Create basic security group
+      os_security_group:
+        cloud: openshift
+        state: present
+        name: basic
+
+    - name: Add security group rules
+      os_security_group_rule:
+        cloud: openshift
+        security_group: basic
+        protocol: "{{ item.protocol }}"
+        port_range_min: "{{ item.min }}"
+        port_range_max: "{{ item.max }}"
+        remote_ip_prefix: 0.0.0.0/0
+      with_items:
+        - { "protocol": "tcp", "min": 22, "max": 22 }
+        - { "protocol": "icmp", "min": -1, "max": -1 }
+        - { "protocol": "udp", "min": 53, "max": 53 }
+
+    - name: Add ssh config for subnet
+      blockinfile:       
+        path: "{{ ansible_env.HOME }}/.ssh/config"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+        block: |
+          Host {{ network }}.*
+            StrictHostKeyChecking no
+            UserKnownHostsFile=/dev/null
+        backup: yes

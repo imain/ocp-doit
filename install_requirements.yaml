@@ -1,0 +1,111 @@
+- hosts: localhost
+  tasks:
+    - name: Set SELinux permissive
+      selinux:
+        policy: targeted
+        state: permissive
+      become: True
+
+    - name: Update all installed
+      yum: 
+        name: '*'
+        state: latest
+      become: True
+    
+    - name: Remove current golang-src
+      yum:
+        name: golang-src
+        state: absent
+      become: True
+    
+    - name: Install Epel
+      yum:
+        name: epel-release
+        state: latest
+      become: True
+
+    - name: Install packages
+      yum:
+        name:
+          - curl
+          - vim-enhanced
+          - wget
+          - python-pip
+          - patch
+          - psmisc
+          - figlet
+          - golang
+          - https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
+        state: latest
+      become: True
+
+    - name: Install lolcat
+      pip:
+        name: lolcat
+      become: True
+
+    - name: Packages for tripleo-repos install
+      yum:
+        name:
+          - python-setuptools
+          - python-requests
+        state: latest
+      become: True
+
+    - name: Get OpenShift client tools archive
+      get_url:
+        url: https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+        dest: /tmp/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+    
+    - name: Extract OpenShift client tools
+      unarchive:
+        src: /tmp/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz
+        dest: /tmp
+        remote_src: True
+
+    - name: Copy OpenShift client tools to /usr/local/bin
+      copy:
+        src: /tmp/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/{{ item }}
+        dest: /usr/local/bin
+      with_items:
+        - kubectl
+        - oc
+      become: True
+    
+    - name: Clone tripleo-repos
+      git:
+        repo: https://git.openstack.org/openstack/tripleo-repos
+        dest: "{{ ansible_env.HOME }}/tripleo-repos"
+    
+    - name: Setup tripleo-repos
+      command: python setup.py install
+      args:
+        chdir: "{{ ansible_env.HOME }}/tripleo-repos"
+      become: True
+
+    - name: Run tripleo-repo
+      command: tripleo-repos current-tripleo
+      become: True
+  
+    - name: Update packages again
+      yum:
+        name: '*'
+        state: latest
+      become: True
+
+    - name: Install tripleoclient
+      yum:
+        name: python2-tripleoclient
+        state: latest
+      become: True
+
+    - name: tripleo-heat-templates 
+      synchronize:
+        src: /usr/share/openstack-tripleo-heat-templates
+        dest: "{{ playbook_dir }}/tripleo-heat-templates"
+
+    - name: Apply Octavia hack patch
+      patch:
+        src: "{{ playbook_dir }}/octavia_hack.patch"
+        basedir: "{{ playbook_dir }}/tripleo-heat-templates"
+        strip: 1
