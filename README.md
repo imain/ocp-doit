@@ -23,18 +23,9 @@ local environment.
 - `CONFIG="config_user.sh" ./02_run_all_in_one.sh`
 - `CONFIG="config_user.sh" ./03_configure_undercloud.sh`
 - `CONFIG="config_user.sh" ./04_ocp_repo_sync.sh`
+- `CONFIG="config_user.sh" ./05_build_ocp_installer.sh`
 
-At step 5, you can just build the installer, or you can run a script that sets
-up a local docker registry helpful if you are going to be making changes to the
-OpenStack machine actuator and related components.
-
-- `CONFIG="config_user.sh" ./build_ocp_installer.sh`
-
-Or:
-
-- `CONFIG="config_user.sh" ./05_build_ocp_dependencies.sh`
-
-and finally, run the OpenShift installer to do a deployment on your local
+Finally, run the OpenShift installer to do a deployment on your local
 single node OpenStack deployment:
 
 - `CONFIG="config_user.sh" ./06_run_ocp.sh`
@@ -47,7 +38,7 @@ development environment.  You can do this by generating and editing the
 `install-config.yaml` file before launching the deployment.
 
 - `CONFIG="config_user.sh" ./06_run_ocp.sh create install-config`
-- `${EDITOR} ocp/install-config.yaml
+- `${EDITOR} ocp/install-config.yaml`
 - `CONFIG="config_user.sh" ./06_run_ocp.sh`
 
 ## 3) Installer Dev Workflow
