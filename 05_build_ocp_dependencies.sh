@@ -20,9 +20,9 @@ fi
 figlet "Run docker registry" | lolcat
 
 OVERRIDE_IMAGES=""
-podman rm -f registry || true
+sudo podman rm -f registry || true
 mkdir -p ${PWD}/certs
-podman run -d -v "${PWD}/certs:/certs" -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key -p 8787:5000 --name registry docker.io/library/registry
+sudo podman run -d -v "${PWD}/certs:/certs" -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key -p 8787:5000 --name registry docker.io/library/registry
 
 figlet "Building terraform" | lolcat
 
