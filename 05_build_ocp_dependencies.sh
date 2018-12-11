@@ -22,7 +22,9 @@ figlet "Run docker registry" | lolcat
 OVERRIDE_IMAGES=""
 sudo podman rm -f registry || true
 mkdir -p ${PWD}/certs
-sudo podman run -d -v "${PWD}/certs:/certs" -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key -p 8787:5000 --name registry docker.io/library/registry
+# We are not setting up a cert here causing it to break.  Just letting the registry generate one for now.
+#sudo podman run -d -v "${PWD}/certs:/certs" -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key -p 8787:5000 --name registry docker.io/library/registry
+sudo podman run -d -v "${PWD}/certs:/certs" -p 8787:5000 --name registry docker.io/library/registry
 
 figlet "Building terraform" | lolcat
 
