@@ -30,6 +30,11 @@ single node OpenStack deployment:
 
 - `CONFIG="config_user.sh" ./06_run_ocp.sh`
 
+Once the installer is running and the VMs have been created, you will probably
+want to expose the service VM via a floating IP so it can be reached.
+
+- `CONFIG="config_user.sh" ./expose_ocp_api.sh`
+
 ### Customizing Deployment
 
 You may need to provide further customization to your deployment, such as
