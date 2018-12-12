@@ -39,8 +39,7 @@ sync_go_repo_and_patch github.com/openshift/machine-api-operator https://github.
 sync_go_repo_and_patch \
   github.com/openshift/installer \
   https://github.com/openshift/installer.git \
-  https://github.com/flaper87/installer/commit/1501bacd5e7cc4ec06a42318e3cbc3c98a7e9d87.patch \
-  https://github.com/flaper87/installer/commit/f009eed8c9ae446e1f71cd74da9cebd113f3009b.patch
+  https://github.com/flaper87/installer/commit/1501bacd5e7cc4ec06a42318e3cbc3c98a7e9d87.patch
 
 sync_go_repo_and_patch github.com/terraform-providers/terraform-provider-openstack https://github.com/terraform-providers/terraform-provider-openstack
 
