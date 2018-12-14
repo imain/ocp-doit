@@ -6,4 +6,4 @@ source ocp_install_env.sh
 
 $GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug --dir ocp destroy cluster
 
-rm -rf ocp
+rm -rf ocp/{auth,terraform.tfstate}
