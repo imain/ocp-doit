@@ -9,7 +9,7 @@ echo "$GOPATH" | lolcat # should print $HOME/go or something like that
 function sync_go_repo_and_patch {
     DEST="$GOPATH/src/$1"
     figlet "Syncing $1" | lolcat
-    
+
     if [ ! -d $DEST ]; then
         mkdir -p $DEST
         git clone $2 $DEST
@@ -36,10 +36,7 @@ sync_go_repo_and_patch github.com/openshift/release https://github.com/openshift
 sync_go_repo_and_patch github.com/openshift/machine-config-operator https://github.com/openshift/machine-config-operator.git
 sync_go_repo_and_patch github.com/openshift/machine-api-operator https://github.com/openshift/machine-api-operator.git
 
-sync_go_repo_and_patch \
-  github.com/openshift/installer \
-  https://github.com/openshift/installer.git \
-  https://github.com/flaper87/installer/commit/1501bacd5e7cc4ec06a42318e3cbc3c98a7e9d87.patch
+sync_go_repo_and_patch github.com/openshift/installer https://github.com/openshift/installer.git
 
 sync_go_repo_and_patch github.com/terraform-providers/terraform-provider-openstack https://github.com/terraform-providers/terraform-provider-openstack
 
