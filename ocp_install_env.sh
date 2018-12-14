@@ -1,28 +1,15 @@
 eval "$(go env)"
 
 export OS_CLOUD=openshift
-export OPENSHIFT_INSTALL_OPENSTACK_CLOUD="${OS_CLOUD}"
 export OPENSHIFT_INSTALL_DATA="$GOPATH/src/github.com/openshift/installer/data/data"
-export OPENSHIFT_INSTALL_OPENSTACK_REGION=regionOne
-export OPENSHIFT_INSTALL_OPENSTACK_IMAGE=rhcos
-export OPENSHIFT_INSTALL_BASE_DOMAIN=shiftstack.com
-export OPENSHIFT_INSTALL_CLUSTER_NAME=ostest
-export OPENSHIFT_INSTALL_EMAIL_ADDRESS=me@redhat.com
-export OPENSHIFT_INSTALL_PASSWORD=foobar
-export OPENSHIFT_INSTALL_PLATFORM=openstack
-export OPENSHIFT_INSTALL_OPENSTACK_EXTERNAL_NETWORK=public
-export OPENSHIFT_INSTALL_PULL_SECRET='{"auths": { "quay.io": { "auth": "Y29yZW9zK3RlYzJfaWZidWdsa2VndmF0aXJyemlqZGMybnJ5ZzpWRVM0SVA0TjdSTjNROUUwMFA1Rk9NMjdSQUZNM1lIRjRYSzQ2UlJBTTFZQVdZWTdLOUFIQlM1OVBQVjhEVlla", "email": "" }}}'
-export OPENSHIFT_INSTALL_SSH_PUB_KEY="`cat $HOME/.ssh/id_rsa.pub`"
+export OPENSTACK_REGION=regionOne
+export OPENSTACK_IMAGE=rhcos
+export BASE_DOMAIN=shiftstack.com
+export CLUSTER_NAME=ostest
+export OPENSTACK_EXTERNAL_NETWORK=public
+export PULL_SECRET='{"auths": { "quay.io": { "auth": "Y29yZW9zK3RlYzJfaWZidWdsa2VndmF0aXJyemlqZGMybnJ5ZzpWRVM0SVA0TjdSTjNROUUwMFA1Rk9NMjdSQUZNM1lIRjRYSzQ2UlJBTTFZQVdZWTdLOUFIQlM1OVBQVjhEVlla", "email": "" }}}'
+export SSH_PUB_KEY="`cat $HOME/.ssh/id_rsa.pub`"
 
 # Not used by the installer.  Used by s.sh.
-export OPENSHIFT_INSTALL_SSH_PRIV_KEY="$HOME/.ssh/id_rsa"
-
-# NOTE(trown): It seems like there is a bug with hardcoded path for the clouds.yaml file in manifests/tectonic.go
-# https://github.com/openshift/installer/blob/2b52ad20793d37471c5645cbbe089e8a6656b802/pkg/asset/manifests/tectonic.go#L23
-# We can workaround the bug by copying our clouds.yaml there
-# This will be fixed by https://github.com/openshift/installer/pull/588
-if ! [ -f /etc/openstack/clouds.yaml ]; then
-    sudo mkdir /etc/openstack
-    sudo cp $HOME/.config/openstack/clouds.yaml /etc/openstack/
-fi
+export SSH_PRIV_KEY="$HOME/.ssh/id_rsa"
 
