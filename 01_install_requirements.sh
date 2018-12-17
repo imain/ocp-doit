@@ -7,13 +7,6 @@ sudo setenforce permissive
 
 sudo yum -y update
 
-sudo yum -y erase golang-src
-
-sudo yum -y install http://cbs.centos.org/kojifiles/packages/go-srpm-macros/2/17.el7/noarch/go-srpm-macros-2-17.el7.noarch.rpm
-sudo yum -y install $GOLANG_SOURCE/noarch/golang-src-$GOLANG_VERSION.noarch.rpm \
-                    $GOLANG_SOURCE/x86_64/golang-$GOLANG_VERSION.x86_64.rpm \
-                    $GOLANG_SOURCE/x86_64/golang-bin-$GOLANG_VERSION.x86_64.rpm
-
 sudo yum -y install epel-release
 sudo yum -y install curl vim-enhanced wget python-pip patch psmisc figlet golang
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
