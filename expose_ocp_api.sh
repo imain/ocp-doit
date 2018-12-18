@@ -22,6 +22,6 @@ if ! openstack floating ip list | grep ${LB_FLOATING_IP} ; then
 fi
 openstack floating ip set --port lb-port ${LB_FLOATING_IP}
 
-if ! grep -q ${LB_FLOATING_IP} /etc/resolv.conf ; then
-    (echo "nameserver ${LB_FLOATING_IP}" && cat /etc/resolv.conf) | sudo tee /etc/resolv.conf
+if ! grep -q ${LB_FLOATING_IP} /etc/hosts ; then
+    (echo "${LB_FLOATING_IP} ostest-api.shiftstack.com" && cat /etc/hosts) | sudo tee /etc/hosts
 fi
