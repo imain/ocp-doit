@@ -8,7 +8,7 @@ source common.sh
 if [ ! -d ocp ]; then
     mkdir -p ocp
     export CLUSTER_ID=$(uuidgen --random)
-    cat > ocp/install-config.yml << EOF
+    cat > ocp/install-config.yaml << EOF
 baseDomain: ${BASE_DOMAIN}
 clusterID:  ${CLUSTER_ID}
 machines:
