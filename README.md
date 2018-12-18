@@ -30,8 +30,10 @@ single node OpenStack deployment:
 
 - `CONFIG="config_user.sh" ./06_run_ocp.sh`
 
-Once the installer is running and the VMs have been created, you will probably
-want to expose the service VM via a floating IP so it can be reached.
+Once the installer is running and the VMs have been created, the following
+script will add an `/etc/hosts` entry for the floating IP of the service VM
+hosting the API load balancer.  This is required for the installer to be able
+to look up the API hostname and talk to the API.
 
 - `CONFIG="config_user.sh" ./expose_ocp_api.sh`
 
