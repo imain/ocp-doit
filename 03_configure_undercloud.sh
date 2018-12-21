@@ -21,7 +21,7 @@ if ! openstack network show public; then
     openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
 fi
 if ! openstack subnet show public-subnet; then
-    openstack subnet create public-subnet --subnet-range $NETWORK.0/24 --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
+    openstack subnet create public-subnet --subnet-range $NETWORK.0/$CIDR --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
 fi
 
 if ! openstack image show cirros; then
