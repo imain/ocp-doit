@@ -4,6 +4,7 @@ export OS_CLOUD=openshift
 export OPENSHIFT_INSTALL_DATA="$GOPATH/src/github.com/openshift/installer/data/data"
 export OPENSTACK_REGION=regionOne
 export OPENSTACK_IMAGE=rhcos
+export OPENSTACK_FLAVOR=m1.medium
 export BASE_DOMAIN=shiftstack.com
 export CLUSTER_NAME=ostest
 export OPENSTACK_EXTERNAL_NETWORK=public
