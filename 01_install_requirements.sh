@@ -30,7 +30,7 @@ cd
 #sudo tripleo-repos current-tripleo
 
 # current-tripleo is broken for the all-in-one atm.
-sudo tripleo-repos current-tripleo
+sudo tripleo-repos current-tripleo-dev
 sudo yum -y update
 sudo yum install -y python2-tripleoclient
 
