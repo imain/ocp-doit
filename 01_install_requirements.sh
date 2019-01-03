@@ -38,7 +38,5 @@ sudo yum install -y python2-tripleoclient
 if [ ! -d $SCRIPTDIR/tripleo-heat-templates ]; then
   cd $SCRIPTDIR
   cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
-  cd tripleo-heat-templates
-  cat ../octavia_hack.patch | patch -p1
 fi
 

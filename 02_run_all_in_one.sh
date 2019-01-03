@@ -51,9 +51,9 @@ sudo openstack tripleo deploy \
     --templates $SCRIPTDIR/tripleo-heat-templates \
     --local-ip=$LOCAL_IP/$CIDR \
     -e $SCRIPTDIR/containers-prepare-parameters.yaml \
-    -r $SCRIPTDIR/standalone.yaml \
+    -r $SCRIPTDIR/tripleo-heat-templates/roles/Standalone.yaml \
+    -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
     -e $SCRIPTDIR/standalone_parameters.yaml \
-    -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone.yaml \
     --output-dir $SCRIPTDIR/standalone \
     --standalone
 
