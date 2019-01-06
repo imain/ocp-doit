@@ -33,7 +33,8 @@ cd
 sudo tripleo-repos current-tripleo-dev
 sudo yum -y update
 sudo yum install -y python2-tripleoclient
-
+# make sure that 'dig' is installed
+sudo yum install -y bind-utils
 # TRIPLEO HEAT TEMPLATES
 if [ ! -d $SCRIPTDIR/tripleo-heat-templates ]; then
   cd $SCRIPTDIR
