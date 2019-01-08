@@ -23,10 +23,10 @@ networking:
   - cidr:             10.128.0.0/14
     hostSubnetLength: 9
   serviceCIDR: 172.30.0.0/16
+  machineCIDR: 10.0.0.0/16
   type:        OpenshiftSDN
 platform:
   openstack:
-    NetworkCIDRBlock: 10.0.0.0/16
     baseImage:        ${OPENSTACK_IMAGE}
     cloud:            ${OS_CLOUD}
     externalNetwork:  ${OPENSTACK_EXTERNAL_NETWORK}
