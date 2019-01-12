@@ -13,6 +13,9 @@ fi
 if ! openstack flavor show m1.medium; then
     openstack flavor create --ram 4096 --disk 20 --vcpu 2 --public m1.medium
 fi
+if ! openstack flavor show m1.large; then
+    openstack flavor create --ram 8192 --disk 20 --vcpu 4 --public m1.large
+fi
 if ! openstack network show public; then
     openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
 fi
