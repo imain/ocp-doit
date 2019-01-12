@@ -99,6 +99,7 @@ sed -i.bak 's/cloud:/#cloud:/' ~/.config/openstack/clouds.yaml
 sed -i.bak '4i\      domain_name: default' ~/.config/openstack/clouds.yaml
 
 # Enable DNS port and verify that DNS still working after tripleo deployment
+# FIXME - Make these persist a reboot
 sudo iptables -I INPUT 2 -p udp --dport 53 -j ACCEPT
 sudo iptables -I INPUT 3 -p udp --sport 53 -j ACCEPT
 set +x
