@@ -7,6 +7,9 @@ source common.sh
 : ${DNS_SERVER_1:=1.1.1.1}
 
 # run CoreDns container (host-net), Neutron upstream-dns will point to this server and CoreDns will point to external DNS server
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo chcon -t container_file_t -R "$(pwd)/coredns_cfg"
 sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/g" coredns_cfg/Corefile
 sudo docker run -d  -m 128m --restart="unless-stopped" --net host --cap-add=NET_ADMIN -v "$PWD"/coredns_cfg:/etc/coredns   --name coredns coredns/coredns:latest -conf  /etc/coredns/Corefile
 
