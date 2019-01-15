@@ -36,8 +36,10 @@ sudo yum install -y python2-tripleoclient
 # make sure that 'dig' is installed
 sudo yum install -y bind-utils
 # TRIPLEO HEAT TEMPLATES
-if [ ! -d $SCRIPTDIR/tripleo-heat-templates ]; then
-  cd $SCRIPTDIR
-  cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
+if [ -d $SCRIPTDIR/tripleo-heat-templates ]; then
+  rm -Rf $SCRIPTDIR/tripleo-heat-templates
 fi
+
+cd $SCRIPTDIR
+cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
 
