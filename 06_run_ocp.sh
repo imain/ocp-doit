@@ -28,7 +28,6 @@ networking:
   type:        OpenshiftSDN
 platform:
   openstack:
-    baseImage:        ${OPENSTACK_IMAGE}
     cloud:            ${OS_CLOUD}
     externalNetwork:  ${OPENSTACK_EXTERNAL_NETWORK}
     region:           ${OPENSTACK_REGION}
