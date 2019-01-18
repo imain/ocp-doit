@@ -75,6 +75,7 @@ parameter_defaults:
   StandaloneEnableRoutedNetworks: false
   StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
+  OctaviaAmphoraSshKeyFile: /home/$USER/.ssh/id_rsa.pub
   $PARAMETERS_EXTRA
 EOF_CAT
 
@@ -86,6 +87,7 @@ sudo openstack tripleo deploy \
     -e $SCRIPTDIR/containers-prepare-parameters.yaml \
     -r $SCRIPTDIR/tripleo-heat-templates/roles/Standalone.yaml \
     -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
+    -e $SCRIPTDIR/tripleo-heat-templates/environments/services/octavia.yaml \
     -e $SCRIPTDIR/standalone_parameters.yaml \
     --output-dir $SCRIPTDIR/standalone \
     --standalone

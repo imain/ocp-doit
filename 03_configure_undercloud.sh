@@ -6,7 +6,8 @@ source common.sh
 # NOTE: this is the openstack admin section
 export OS_CLOUD=standalone
 
-openstack endpoint list
+openstack endpoint list | lolcat
+
 if ! openstack flavor show tiny; then
     openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
 fi
@@ -68,10 +69,6 @@ fi
 
 # NOTE: this is a non-admin user
 export OS_CLOUD=openshift
-
-if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
-    ssh-keygen
-fi
 
 if ! openstack keypair show default; then
     openstack keypair create --public-key ~/.ssh/id_rsa.pub default
