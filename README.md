@@ -5,12 +5,11 @@ OpenShift Installer OpenStack Dev Scripts
 
 - CentOS 7
 - ideally on a bare metal host
-- user with sudo access
+- user with passwordless sudo access
 
 # Instructions
 
 ## 1) Create local config
-
 
 Create a config file based on the example and set values appropriate for your
 local environment.
@@ -19,23 +18,24 @@ local environment.
 
 ## 2) Run the scripts in order
 
-- `CONFIG="config_user.sh" ./01_install_requirements.sh`
-- `CONFIG="config_user.sh" ./02_run_all_in_one.sh`
-- `CONFIG="config_user.sh" ./03_configure_undercloud.sh`
-- `CONFIG="config_user.sh" ./04_ocp_repo_sync.sh`
-- `CONFIG="config_user.sh" ./05_build_ocp_installer.sh`
+- `export CONFIG=config_${user}.sh`
+- `./01_install_requirements.sh`
+- `./02_run_all_in_one.sh`
+- `./03_configure_undercloud.sh`
+- `./04_ocp_repo_sync.sh`
+- `./05_build_ocp_installer.sh`
 
 and finally, run the OpenShift installer to do a deployment on your local
 single node OpenStack deployment:
 
-- `CONFIG="config_user.sh" ./06_run_ocp.sh`
+- `./06_run_ocp.sh`
 
 Once the installer is running and the VMs have been created, the following
 script will add an `/etc/hosts` entry for the floating IP of the service VM
 hosting the API load balancer.  This is required for the installer to be able
 to look up the API hostname and talk to the API.
 
-- `CONFIG="config_user.sh" ./expose_ocp_api.sh`
+- `./expose_ocp_api.sh`
 
 ### Customizing Deployment
 
@@ -44,9 +44,9 @@ limiting the number of master and worker nodes created to fit in your
 development environment.  You can do this by generating and editing the
 `install-config.yaml` file before launching the deployment.
 
-- `CONFIG="config_user.sh" ./06_run_ocp.sh create install-config`
+- `./06_run_ocp.sh create install-config`
 - `${EDITOR} ocp/install-config.yaml
-- `CONFIG="config_user.sh" ./06_run_ocp.sh`
+- `./06_run_ocp.sh`
 
 ## 3) Installer Dev Workflow
 
@@ -55,5 +55,5 @@ sripts.  If you're making changes to the installer, your workflow would look
 like:
 
 - `ocp_cleanup.sh`
-- `CONFIG=”config_user.sh” build_ocp_installer.sh`
-- `CONFIG=”config_user.sh” 06_run_ocp.sh`
+- `build_ocp_installer.sh`
+- `06_run_ocp.sh`
