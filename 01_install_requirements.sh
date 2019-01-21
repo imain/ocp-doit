@@ -4,7 +4,9 @@ set -x
 source common.sh
 
 sudo setenforce permissive
-
+# Add this so it persists across reboots.  Currently Octavia
+# doesn't work with selinux enforcing.
+sudo sed -i "s/=enforcing/=permissive/g" /etc/selinux/config
 sudo yum -y update
 
 sudo yum -y install epel-release
