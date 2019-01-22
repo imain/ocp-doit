@@ -76,6 +76,8 @@ parameter_defaults:
   StandaloneHomeDir: /home/$USER
   StandaloneLocalMtu: 1500
   OctaviaAmphoraSshKeyFile: /home/$USER/.ssh/id_rsa.pub
+  # Octavia is currently broken with selinux enabled.
+  SELinuxMode: permissive
   $PARAMETERS_EXTRA
 EOF_CAT
 
