@@ -51,10 +51,8 @@ cd $SCRIPTDIR
 cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
 
 # Patch to make octavia work in standalone:
-# https://review.openstack.org/#/c/628957/6
 pushd tripleo-heat-templates
 git init
-git fetch https://git.openstack.org/openstack/tripleo-heat-templates refs/changes/57/628957/6 && git format-patch -1 --stdout FETCH_HEAD | patch -p1
 popd
 
 # Set hostname properly.
