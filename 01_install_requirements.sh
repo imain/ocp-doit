@@ -55,10 +55,9 @@ fi
 cd $SCRIPTDIR
 cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
 
-# Patch to make octavia work in standalone:
-pushd tripleo-heat-templates
-git init
-popd
+# Download amphora image for octavia:
+sudo mkdir /usr/share/openstack-octavia-amphora-images/
+sudo curl -o /usr/share/openstack-octavia-amphora-images/amphora-x64-haproxy.qcow2 http://images.rdoproject.org/octavia/master/amphora-x64-haproxy-centos.qcow2
 
 # Set hostname properly.
 HOSTNAME=`host $LOCAL_IP | cut -f 5 -d ' ' | sed s/.$//`
