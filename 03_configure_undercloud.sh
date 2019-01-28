@@ -42,6 +42,23 @@ elif ! openstack image show rhcos -c properties -f shell | grep -q $RHOS_IMAGE_H
     openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
 fi
 
+# Set up all the stuff we need for octavia.
+OCTAVIA_AMPHORA="amphora-x64-haproxy-centos.qcow2"
+echo $OCTAVIA_AMPHORA | figlet | lolcat
+
+if ! openstack image show amphora-image; then
+    if [ ! -f "$OCTAVIA_AMPHORA" ]; then
+        curl -o $OCTAVIA_AMPHORA https://images.rdoproject.org/octavia/master/amphora-x64-haproxy-centos.qcow2
+    fi
+    openstack image create --container-format bare --disk-format qcow2 --public --tag amphora-image --file $OCTAVIA_AMPHORA amphora-image
+fi
+
+HOST_LOCALDOMAIN=`hostname -A | sed 's/ /\n/g' | grep localdomain`
+echo $HOST_LOCALDOMAIN | lolcat
+neutron port-update --binding:host_id=$HOST_LOCALDOMAIN $(openstack port list -c ID -c Name | grep health | cut -f2 -d " ")
+
+echo openstack loadbalancer create --vip-subnet-id public-subnet --name lb1 | lolcat
+
 # Create a user without any admin priviledges
 if ! openstack project show openshift; then
     openstack project create openshift
