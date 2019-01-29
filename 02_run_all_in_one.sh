@@ -62,10 +62,6 @@ sudo openstack tripleo deploy \
     --output-dir $SCRIPTDIR/standalone \
     --standalone
 
-# NOTE(flaper87): We're using tripleo-current,
-# and this template only exists on master
-# -e $SCRIPTDIR/tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
-
 sudo chown -R $USER:$USER ~/.config/openstack
 sed -i.bak 's/cloud:/#cloud:/' ~/.config/openstack/clouds.yaml
 sed -i.bak '4i\      domain_name: default' ~/.config/openstack/clouds.yaml
