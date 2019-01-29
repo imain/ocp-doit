@@ -36,6 +36,12 @@ popd
 #sudo tripleo-repos current-tripleo-dev
 sudo tripleo-repos current-tripleo
 
+TRIPLEO_A=${TRIPLEO_VERSION:0:2}
+TRIPLEO_B=${TRIPLEO_VERSION:2:2}
+echo Pinned to tripleo version $TRIPLEO_A/$TRIPLEO_B/$TRIPLEO_VERSION | lolcat
+sudo sed -i s/delorean-openstack-kolla-.*/delorean-openstack-kolla-$TRIPLEO_VERSION/ /etc/yum.repos.d/delorean.repo
+sudo sed -i -e "{s@trunk.rdoproject.org/centos7/.*@trunk.rdoproject.org/centos7/$TRIPLEO_A/$TRIPLEO_B/$TRIPLEO_VERSION@}" /etc/yum.repos.d/delorean.repo
+
 sudo yum -y update
 sudo yum install -y python2-tripleoclient
 
