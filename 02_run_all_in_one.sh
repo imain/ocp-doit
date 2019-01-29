@@ -43,6 +43,9 @@ set -x
 openstack tripleo container image prepare default \
       --output-env-file $SCRIPTDIR/containers-prepare-parameters.yaml
 
+# Pin to a specific tripleo version.
+sed -i "s/ tag:.*/ tag: $TRIPLEO_VERSION/" containers-prepare-parameters.yaml
+
 cat > $SCRIPTDIR/standalone_parameters.yaml <<-EOF_CAT
 parameter_defaults:
   CloudName: $LOCAL_IP
