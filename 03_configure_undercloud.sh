@@ -18,7 +18,10 @@ if ! openstack flavor show m1.large; then
     openstack flavor create --ram 8192 --disk 20 --vcpu 4 --public m1.large
 fi
 if ! openstack network show public; then
-    openstack network create --external --provider-physical-network datacentre --provider-network-type flat public
+    # We're sharing the public network with everyone here.  The other approach is to use eg:
+    # neutron rbac-create --target-tenant 3321b17b840d448d8503f4dbe9502b17 --action  access_as_shared --type network e42a14bc-b1f2-4490-896b-e3d3ea2ae310
+    # to grant shared access to a specific tenant.
+    openstack network create --external --share --provider-physical-network datacentre --provider-network-type flat public
 fi
 if ! openstack subnet show public-subnet; then
     openstack subnet create public-subnet --subnet-range $NETWORK.0/$CIDR --no-dhcp --gateway $DEFAULT_ROUTE --allocation-pool start=$NETWORK.$FLOATING_IP_START,end=$NETWORK.$FLOATING_IP_END --network public
@@ -60,7 +63,7 @@ HOST_LOCALDOMAIN=`hostname -A | sed 's/ /\n/g' | grep localdomain`
 echo $HOST_LOCALDOMAIN | lolcat
 neutron port-update --binding:host_id=$HOST_LOCALDOMAIN $(openstack port list -c ID -c Name | grep health | cut -f2 -d " ")
 
-echo openstack loadbalancer create --vip-subnet-id public-subnet --name lb1 | lolcat
+echo To test: openstack loadbalancer create --vip-subnet-id public-subnet --name lb1 | lolcat
 
 # Create a user without any admin priviledges
 if ! openstack project show openshift; then
