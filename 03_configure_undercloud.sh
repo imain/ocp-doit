@@ -32,10 +32,7 @@ if ! openstack image show cirros; then
     openstack image create cirros --container-format bare --disk-format qcow2 --public --file "$CIRROS_IMAGE_FILENAME"
 fi
 
-if [ ! -f "$RHCOS_IMAGE_FILENAME" ]; then
-    curl --insecure --compressed -L -o "${RHCOS_IMAGE_FILENAME}" "https://releases-redhat-coreos-dev.cloud.paas.upshift.redhat.com/storage/releases/maipo/${RHCOS_IMAGE_VERSION}/${RHCOS_IMAGE_FILENAME}".gz
-fi
-
+./get_rhcos_image.sh
 RHOS_IMAGE_HASH=$(sha512sum $RHCOS_IMAGE_FILENAME | awk '{print $1}')
 if ! openstack image show rhcos; then
     openstack image create rhcos --container-format bare --disk-format qcow2 --public --file $RHCOS_IMAGE_FILENAME
