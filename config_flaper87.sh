@@ -13,4 +13,3 @@ BOOTSTRAP_FLOATING_IP=10.1.11.181
 
 # Needed if running in a VM
 PARAMETERS_EXTRA="NtpServer: ['clock.redhat.com']"
-export OPENSHIFT_INSTALL_RELEASE_IMAGE_OVERRIDE="quay.io/flaper87/origin-release:v4.0"
