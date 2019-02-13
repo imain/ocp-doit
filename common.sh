@@ -26,4 +26,4 @@ export OPENSHIFT_INSTALL_RELEASE_IMAGE_OVERRIDE="registry.svc.ci.openshift.org/o
 
 # We are pinning to upstream tripleo version.  This has passed CI promotion.
 # We'll have to check once in a while for a new version though.
-TRIPLEO_VERSION='7e28b872afba83ed4b3789b14d4d3c5061789ace_c3783cbe'
+TRIPLEO_VERSION='54c5a6de8ce5b9cfae83632a7d81000721d56071_786d88d2'
