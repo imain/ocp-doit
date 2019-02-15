@@ -7,6 +7,9 @@ source common.sh
 
 if [ ! -d ocp ]; then
     mkdir -p ocp
+fi
+
+if [ ! -f ocp/install-config.yaml ]; then
     export CLUSTER_ID=$(uuidgen --random)
     cat > ocp/install-config.yaml << EOF
 apiVersion: v1beta1
