@@ -11,6 +11,9 @@ export OPENSTACK_EXTERNAL_NETWORK=public
 export PULL_SECRET='{"auths": { "quay.io": { "auth": "Y29yZW9zK3RlYzJfaWZidWdsa2VndmF0aXJyemlqZGMybnJ5ZzpWRVM0SVA0TjdSTjNROUUwMFA1Rk9NMjdSQUZNM1lIRjRYSzQ2UlJBTTFZQVdZWTdLOUFIQlM1OVBQVjhEVlla", "email": "" }}}'
 export SSH_PUB_KEY="`cat $HOME/.ssh/id_rsa.pub`"
 
+export API_ADRESS="ostest-api.shiftstack.com"
+export CONSOLE_ADRESS="console-openshift-console.apps.shiftstack.com"
+
 # Not used by the installer.  Used by s.sh.
 export SSH_PRIV_KEY="$HOME/.ssh/id_rsa"
 

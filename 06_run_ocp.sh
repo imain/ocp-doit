@@ -5,6 +5,20 @@ set -e
 source ocp_install_env.sh
 source common.sh
 
+export OS_CLOUD=openshift
+
+# check whether we already have a floating ip created
+FLOATING_IP=$(openstack floating ip list --format value | awk -F ' ' 'NR==1 {print $2}')
+
+# create new floating ip if doesn't exist
+if [ -z "$FLOATING_IP" ]; then
+    FLOATING_IP=$(openstack floating ip create public --format value | awk 'NR==6')
+fi
+
+# add data to /etc/hosts
+grep -qxF "$FLOATING_IP $API_ADRESS" /etc/hosts || echo "$FLOATING_IP $API_ADRESS" | sudo tee -a /etc/hosts
+grep -qxF "$FLOATING_IP $CONSOLE_ADRESS" /etc/hosts || echo "$FLOATING_IP $CONSOLE_ADRESS" | sudo tee -a /etc/hosts
+
 if [ ! -d ocp ]; then
     mkdir -p ocp
 fi
@@ -35,6 +49,7 @@ platform:
     externalNetwork:  ${OPENSTACK_EXTERNAL_NETWORK}
     region:           ${OPENSTACK_REGION}
     computeFlavor:    ${OPENSTACK_FLAVOR}
+    lbFloatingIP:     ${FLOATING_IP}
 pullSecret: |
   ${PULL_SECRET}
 sshKey: |
