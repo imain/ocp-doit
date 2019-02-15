@@ -23,6 +23,7 @@ parameter_defaults:
   DeploymentUser: $USER
   DnsServers:
     - $LOCAL_IP
+  EnablePackageInstall: true
   NeutronDhcpAgentDnsmasqDnsServers:
     - $LOCAL_IP
   # needed for vip & pacemaker
