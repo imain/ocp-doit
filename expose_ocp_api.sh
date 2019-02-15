@@ -15,5 +15,5 @@ LB_FLOATING_IP=$(openstack server show ostest-api -f value -c addresses | cut -d
 echo "Attempting to expose cluster's API on floating IP: ${LB_FLOATING_IP}" | lolcat
 
 if ! grep -q ${LB_FLOATING_IP} /etc/hosts ; then
-    (echo "${LB_FLOATING_IP} ostest-api.shiftstack.com" && grep -v "ostest-api.shiftstack.com" /etc/hosts) | sudo tee /etc/hosts
+    (echo "${LB_FLOATING_IP} api.ostest.shiftstack.com" && grep -v "api.ostest.shiftstack.com" /etc/hosts) | sudo tee /etc/hosts
 fi
