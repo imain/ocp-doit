@@ -26,7 +26,7 @@ fi
 if [ ! -f ocp/install-config.yaml ]; then
     export CLUSTER_ID=$(uuidgen --random)
     cat > ocp/install-config.yaml << EOF
-apiVersion: v1beta1
+apiVersion: v1beta3
 baseDomain: ${BASE_DOMAIN}
 clusterID:  ${CLUSTER_ID}
 machines:
