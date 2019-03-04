@@ -16,8 +16,9 @@ if [ -z "$FLOATING_IP" ]; then
 fi
 
 # add data to /etc/hosts
-grep -qxF "$FLOATING_IP $API_ADRESS" /etc/hosts || echo "$FLOATING_IP $API_ADRESS" | sudo tee -a /etc/hosts
-grep -qxF "$FLOATING_IP $CONSOLE_ADRESS" /etc/hosts || echo "$FLOATING_IP $CONSOLE_ADRESS" | sudo tee -a /etc/hosts
+grep -qxF "$FLOATING_IP $API_ADDRESS" /etc/hosts || echo "$FLOATING_IP $API_ADDRESS" | sudo tee -a /etc/hosts
+grep -qxF "$FLOATING_IP $CONSOLE_ADDRESS" /etc/hosts || echo "$FLOATING_IP $CONSOLE_ADDRESS" | sudo tee -a /etc/hosts
+grep -qxF "$FLOATING_IP $AUTH_ADDRESS" /etc/hosts || echo "$FLOATING_IP $AUTH_ADDRESS" | sudo tee -a /etc/hosts
 
 if [ ! -d ocp ]; then
     mkdir -p ocp
