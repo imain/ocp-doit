@@ -56,8 +56,10 @@ cd $SCRIPTDIR
 cp -rv /usr/share/openstack-tripleo-heat-templates ./tripleo-heat-templates
 
 # Download amphora image for octavia:
-sudo mkdir /usr/share/openstack-octavia-amphora-images/
-sudo curl -o /usr/share/openstack-octavia-amphora-images/amphora-x64-haproxy.qcow2 http://images.rdoproject.org/octavia/master/amphora-x64-haproxy-centos.qcow2
+sudo mkdir -p /usr/share/openstack-octavia-amphora-images/
+if [ ! -f /usr/share/openstack-octavia-amphora-images/amphora-x64-haproxy.qcow2 ]; then
+  sudo curl -o /usr/share/openstack-octavia-amphora-images/amphora-x64-haproxy.qcow2 http://images.rdoproject.org/octavia/master/amphora-x64-haproxy-centos.qcow2
+fi
 
 # Set hostname properly.
 HOSTNAME=`host $LOCAL_IP | cut -f 5 -d ' ' | sed s/.$//`
