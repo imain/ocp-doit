@@ -2,10 +2,8 @@
 set -x
 set -e
 
-source ocp_install_env.sh
 source common.sh
-
-export OS_CLOUD=openshift
+source ocp_install_env.sh
 
 # check whether we already have a floating ip created
 FLOATING_IP=$(openstack floating ip list --format value | awk -F ' ' 'NR==1 {print $2}')
@@ -20,21 +18,21 @@ grep -qxF "$FLOATING_IP $API_ADDRESS" /etc/hosts || echo "$FLOATING_IP $API_ADDR
 grep -qxF "$FLOATING_IP $CONSOLE_ADDRESS" /etc/hosts || echo "$FLOATING_IP $CONSOLE_ADDRESS" | sudo tee -a /etc/hosts
 grep -qxF "$FLOATING_IP $AUTH_ADDRESS" /etc/hosts || echo "$FLOATING_IP $AUTH_ADDRESS" | sudo tee -a /etc/hosts
 
-if [ ! -d ocp ]; then
-    mkdir -p ocp
+if [ ! -d $CLUSTER_NAME ]; then
+    mkdir -p $CLUSTER_NAME
 fi
 
-if [ ! -f ocp/install-config.yaml ]; then
+if [ ! -f $CLUSTER_NAME/install-config.yaml ]; then
     export CLUSTER_ID=$(uuidgen --random)
-    cat > ocp/install-config.yaml << EOF
+    cat > $CLUSTER_NAME/install-config.yaml << EOF
 apiVersion: v1beta3
 baseDomain: ${BASE_DOMAIN}
 clusterID:  ${CLUSTER_ID}
 machines:
 - name:     master
-  replicas: 3
+  replicas: 2
 - name:     worker
-  replicas: 3
+  replicas: 1
 metadata:
   name: ${CLUSTER_NAME}
 networking:
@@ -59,4 +57,4 @@ EOF
 fi
 
 
-$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug ${1:-create} ${2:-cluster} --dir ocp
+$GOPATH/src/github.com/openshift/installer/bin/openshift-install --log-level=debug ${1:-create} ${2:-cluster} --dir $CLUSTER_NAME

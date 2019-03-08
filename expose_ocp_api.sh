@@ -10,10 +10,10 @@ set -ex
 source ocp_install_env.sh
 source common.sh
 
-LB_FLOATING_IP=$(openstack server show ostest-api -f value -c addresses | cut -d " " -f 2)
+LB_FLOATING_IP=$(openstack server show ${CLUSTER_NAME}-api -f value -c addresses | cut -d " " -f 2)
 
 echo "Attempting to expose cluster's API on floating IP: ${LB_FLOATING_IP}" | lolcat
 
 if ! grep -q ${LB_FLOATING_IP} /etc/hosts ; then
-    (echo "${LB_FLOATING_IP} api.ostest.shiftstack.com" && grep -v "api.ostest.shiftstack.com" /etc/hosts) | sudo tee /etc/hosts
+    (echo "${LB_FLOATING_IP} api.${CLUSTER_NAME}.shiftstack.com" && grep -v "api.${CLUSTER_NAME}.shiftstack.com" /etc/hosts) | sudo tee /etc/hosts
 fi
