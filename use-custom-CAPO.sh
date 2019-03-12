@@ -1,4 +1,8 @@
-: ${KUBECONFIG:=ocp/auth/kubeconfig}
+#!/bin/bash
+
+source ocp_install_env.sh
+
+: ${KUBECONFIG:=$CLUSTER_NAME/auth/kubeconfig}
 : ${OLD_IMAGE:=docker.io/openshift/origin-openstack-machine-controllers:v4.0.0}
 : ${NEW_IMAGE:=quay.io/trown/openstack-machine-controllers:rebase}
 
