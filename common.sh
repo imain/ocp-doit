@@ -3,9 +3,10 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 USER=`whoami`
 
-if [ -z "$CONFIG" ]; then
-    echo "Please run with a configuration environment set."
-    echo "eg CONFIG=config_example.sh ./01_all_in_one.sh"
+CONFIG=${CONFIG:-config.sh}
+if [ ! -r "$CONFIG" ]; then
+    echo "Could not find ocp-doit configuration file."
+    echo "Make sure $CONFIG file exists in the ocp-doit directory and that it is readable"
     exit 1
 fi
 source $CONFIG

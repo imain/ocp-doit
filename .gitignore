@@ -7,3 +7,4 @@ standalone/
 standalone_parameters.yaml
 ocp/
 *.qcow2
+config.sh

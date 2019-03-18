@@ -14,11 +14,10 @@ OpenShift Installer OpenStack Dev Scripts
 Create a config file based on the example and set values appropriate for your
 local environment.
 
-`$ cp config_example.sh config_${USER}.sh`
+`$ cp config.sh.example config.sh`
 
 ## 2) Run the scripts in order
 
-- `export CONFIG=config_${user}.sh`
 - `./01_install_requirements.sh`
 - `./02_run_all_in_one.sh`
 - `./03_configure_undercloud.sh`
