@@ -46,14 +46,8 @@ elif ! openstack image show rhcos -c properties -f shell | grep -q $RHOS_IMAGE_H
 fi
 
 # Set up all the stuff we need for octavia.
-OCTAVIA_AMPHORA="amphora-x64-haproxy-centos.qcow2"
-echo $OCTAVIA_AMPHORA | figlet | lolcat
-
 if ! openstack image show amphora-image; then
-    if [ ! -f "$OCTAVIA_AMPHORA" ]; then
-        curl -o $OCTAVIA_AMPHORA https://images.rdoproject.org/octavia/master/amphora-x64-haproxy-centos.qcow2
-    fi
-    openstack image create --container-format bare --disk-format qcow2 --public --tag amphora-image --file $OCTAVIA_AMPHORA amphora-image
+    openstack image create --container-format bare --disk-format qcow2 --public --tag amphora-image --file /usr/share/openstack-octavia-amphora-images/amphora-x64-haproxy.qcow2 amphora-image
 fi
 
 HOST_LOCALDOMAIN=`hostname -A | sed 's/ /\n/g' | grep localdomain`
