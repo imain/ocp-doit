@@ -5,6 +5,8 @@ set -eu
 RELEASE_IMAGE=$1
 CLUSTER_IMAGE_NAME=$2
 
+podman pull "$RELEASE_IMAGE"
+
 CLUSTER_IMAGE="$(podman run --rm $RELEASE_IMAGE image $CLUSTER_IMAGE_NAME)"
 
 podman pull "$CLUSTER_IMAGE"
