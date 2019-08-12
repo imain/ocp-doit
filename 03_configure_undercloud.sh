@@ -17,6 +17,9 @@ fi
 if ! openstack flavor show m1.large; then
     openstack flavor create --ram 8192 --disk 20 --vcpu 4 --public m1.large
 fi
+if ! openstack flavor show m1.xlarge; then
+    openstack flavor create --ram 16384 --disk 40 --vcpu 4 --public m1.xlarge
+fi
 if ! openstack network show public; then
     # We're sharing the public network with everyone here.  The other approach is to use eg:
     # neutron rbac-create --target-tenant 3321b17b840d448d8503f4dbe9502b17 --action  access_as_shared --type network e42a14bc-b1f2-4490-896b-e3d3ea2ae310
