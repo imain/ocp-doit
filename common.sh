@@ -27,4 +27,6 @@ export OPENSHIFT_INSTALL_RELEASE_IMAGE_OVERRIDE="registry.svc.ci.openshift.org/o
 
 # We are pinning to upstream tripleo version.  This has passed CI promotion.
 # We'll have to check once in a while for a new version though.
-TRIPLEO_VERSION='54c5a6de8ce5b9cfae83632a7d81000721d56071_786d88d2'
+# You can get the latest hash here:
+# https://trunk.rdoproject.org/centos7/current-tripleo/commit.yaml
+TRIPLEO_VERSION='25698ebfff692178450478b5207b09ca99d277b2_aba8ec54'
