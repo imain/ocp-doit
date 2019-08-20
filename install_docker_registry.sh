@@ -5,7 +5,7 @@ set -ex
 source common.sh
 
 eval "$(go env)"
-echo "$GOPATH" | lolcat
+echo "$GOPATH" | highlight
 
 if [ "$(cat /proc/sys/user/max_user_namespaces)" = "0" ]; then
 	echo 10000 | sudo tee /proc/sys/user/max_user_namespaces
@@ -17,7 +17,7 @@ if ! grep -q $USER /etc/subgid ; then
 	echo $USER:10000:65536 | sudo tee -a /etc/subgid
 fi
 
-figlet "Run docker registry" | lolcat
+figlet "Run docker registry" | highlight
 
 OVERRIDE_IMAGES=""
 sudo podman rm -f registry || true

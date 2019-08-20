@@ -4,11 +4,11 @@ set -ex
 source common.sh
 
 eval "$(go env)"
-echo "$GOPATH" | lolcat # should print $HOME/go or something like that
+echo "$GOPATH" | highlight # should print $HOME/go or something like that
 
 function sync_go_repo_and_patch {
     DEST="$GOPATH/src/$1"
-    figlet "Syncing $1" | lolcat
+    figlet "Syncing $1" | highlight
 
     if [ ! -d $DEST ]; then
         mkdir -p $DEST

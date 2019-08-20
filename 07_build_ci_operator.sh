@@ -5,7 +5,7 @@ set -ex
 source common.sh
 
 eval "$(go env)"
-echo "$GOPATH" | lolcat
+echo "$GOPATH" | highlight
 
 
 pushd "$GOPATH/src/github.com/openshift/ci-operator"
