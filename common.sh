@@ -30,3 +30,23 @@ export OPENSHIFT_INSTALL_RELEASE_IMAGE_OVERRIDE="registry.svc.ci.openshift.org/o
 # You can get the latest hash here:
 # https://trunk.rdoproject.org/centos7/current-tripleo/commit.yaml
 TRIPLEO_VERSION='25698ebfff692178450478b5207b09ca99d277b2_aba8ec54'
+
+# Use some color to highlight actionable output
+highlight() {
+    set +x
+
+    local IFS
+    local set_bold
+    local reset
+
+    set_bold="$(tput setaf 3)$(tput bold)"
+    reset="$(tput sgr0)"
+
+    set -- "${1:-/dev/stdin}" "${@:2}"
+
+    for f in "$@"; do
+        while read -r line; do
+            printf "%s%s%s\n" "$set_bold" "$line" "$reset"
+        done < "$f"
+    done
+}

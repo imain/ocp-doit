@@ -50,7 +50,7 @@ parameter_defaults:
   $PARAMETERS_EXTRA
 EOF_CAT
 
-lolcat $SCRIPTDIR/standalone_parameters.yaml
+highlight $SCRIPTDIR/standalone_parameters.yaml
 
 sudo openstack tripleo deploy \
     --templates $SCRIPTDIR/tripleo-heat-templates \

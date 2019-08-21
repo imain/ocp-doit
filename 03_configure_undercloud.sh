@@ -6,7 +6,7 @@ source common.sh
 # NOTE: this is the openstack admin section
 export OS_CLOUD=standalone
 
-openstack endpoint list | lolcat
+openstack endpoint list | highlight
 
 if ! openstack flavor show tiny; then
     openstack flavor create --ram 1024 --disk 10 --vcpu 2 --public tiny
@@ -54,10 +54,10 @@ if ! openstack image show amphora-image; then
 fi
 
 HOST_LOCALDOMAIN=`hostname -A | sed 's/ /\n/g' | grep localdomain`
-echo $HOST_LOCALDOMAIN | lolcat
+echo $HOST_LOCALDOMAIN | highlight
 neutron port-update --binding:host_id=$HOST_LOCALDOMAIN $(openstack port list -c ID -c Name | grep health | cut -f2 -d " ")
 
-echo To test: openstack loadbalancer create --vip-subnet-id public-subnet --name lb1 | lolcat
+echo To test: openstack loadbalancer create --vip-subnet-id public-subnet --name lb1 | highlight
 
 # Create a user without any admin priviledges
 if ! openstack project show openshift; then
@@ -121,7 +121,7 @@ Host $NETWORK.*
 EOF
 fi
 
-lolcat <<EOF
+highlight <<EOF
 Undercloud installed and configured.  To test:
 
 export OS_CLOUD=openshift

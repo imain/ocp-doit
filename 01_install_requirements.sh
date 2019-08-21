@@ -13,8 +13,6 @@ sudo yum -y install epel-release
 sudo yum -y install curl vim-enhanced wget python-pip patch psmisc figlet golang
 sudo yum -y install https://dprince.fedorapeople.org/tmate-2.2.1-1.el7.centos.x86_64.rpm
 
-sudo pip install lolcat
-
 # for tripleo-repos install:
 sudo yum -y install python-setuptools python-requests
 
@@ -38,7 +36,7 @@ sudo tripleo-repos current-tripleo
 
 TRIPLEO_A=${TRIPLEO_VERSION:0:2}
 TRIPLEO_B=${TRIPLEO_VERSION:2:2}
-echo Pinned to tripleo version $TRIPLEO_A/$TRIPLEO_B/$TRIPLEO_VERSION | lolcat
+echo Pinned to tripleo version $TRIPLEO_A/$TRIPLEO_B/$TRIPLEO_VERSION | highlight
 sudo sed -i -e "{s@trunk.rdoproject.org/centos7/.*@trunk.rdoproject.org/centos7/$TRIPLEO_A/$TRIPLEO_B/$TRIPLEO_VERSION@}" /etc/yum.repos.d/delorean.repo
 
 sudo yum -y update
@@ -63,7 +61,7 @@ fi
 
 # Set hostname properly.
 HOSTNAME=`host $LOCAL_IP | cut -f 5 -d ' ' | sed s/.$//`
-echo $HOSTNAME | lolcat
+echo $HOSTNAME | highlight
 sudo hostnamectl set-hostname $HOSTNAME
 
 # We need this before tripleo now because octavia expects keys.
